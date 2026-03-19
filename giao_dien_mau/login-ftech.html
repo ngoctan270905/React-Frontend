@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FTECH – Đăng nhập</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --grad-left:   #7b2fbe;
+      --grad-mid:    #1a3a6e;
+      --grad-right:  #00c9b1;
+      --accent:      #2563eb;
+      --accent-hover:#1d4ed8;
+      --text-dark:   #1a2340;
+      --text-label:  #2c3e6b;
+      --text-muted:  #7b90b8;
+      --placeholder: #a0aec8;
+      --border:      #d0ddf0;
+      --border-focus:#2563eb;
+      --white:       #ffffff;
+    }
+
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse at 0% 60%, #5b21b6 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 20%, #06d6b8 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 100%, #0f2460 0%, transparent 60%),
+        linear-gradient(135deg, #6d28d9 0%, #1e3a8a 50%, #0e7490 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle noise texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LOGO ────────────────────────────────────── */
+    .logo {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 28px;
+      animation: fadeDown .6s cubic-bezier(.22,.88,.36,1) both;
+    }
+
+    .logo-wordmark {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: .04em;
+      font-style: italic;
+    }
+    .logo-wordmark span { font-style: normal; font-weight: 300; letter-spacing: .08em; }
+
+    /* Stylised "N" network icon */
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      margin-left: 2px;
+    }
+
+    /* ── MODAL ───────────────────────────────────── */
+    .modal {
+      position: relative;
+      z-index: 2;
+      background: var(--white);
+      border-radius: 12px;
+      width: 380px;
+      padding: 36px 36px 28px;
+      box-shadow:
+        0 2px 4px rgba(0,0,0,.06),
+        0 8px 40px rgba(0,0,0,.18),
+        0 0 0 1px rgba(255,255,255,.12);
+      animation: fadeUp .65s cubic-bezier(.22,.88,.36,1) .08s both;
+    }
+
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+
+    .modal-title {
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 24px;
+      letter-spacing: -.01em;
+    }
+
+    /* ── FIELDS ──────────────────────────────────── */
+    .field { margin-bottom: 14px; }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--text-label);
+      margin-bottom: 6px;
+    }
+    .field-label svg { flex-shrink: 0; opacity: .75; }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: .83rem;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+      background: #fff;
+    }
+    input::placeholder { color: var(--placeholder); font-size: .82rem; }
+    input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+    }
+
+    /* ── REMEMBER ────────────────────────────────── */
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 14px 0 18px;
+    }
+    .remember input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .remember label {
+      font-size: .78rem;
+      color: var(--text-label);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* ── CTA ─────────────────────────────────────── */
+    .btn-login {
+      width: 100%;
+      padding: 10px;
+      background: var(--accent);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: .88rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+      cursor: pointer;
+      transition: background .16s, transform .12s, box-shadow .16s;
+      box-shadow: 0 2px 12px rgba(37,99,235,.30);
+    }
+    .btn-login:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(37,99,235,.40);
+    }
+    .btn-login:active { transform: translateY(0); }
+
+    /* ── LINKS ───────────────────────────────────── */
+    .links {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .links a {
+      font-size: .76rem;
+      color: var(--accent);
+      text-decoration: none;
+      transition: color .14s;
+      font-weight: 500;
+    }
+    .links a:hover { color: var(--accent-hover); text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-wordmark"><span>F</span>TECH</div>
+    <!-- Network N icon -->
+    <svg class="logo-icon" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- outer dots ring -->
+      <circle cx="19" cy="4"  r="2.2" fill="white" opacity=".9"/>
+      <circle cx="30" cy="9"  r="2.2" fill="white" opacity=".9"/>
+      <circle cx="34" cy="19" r="2.2" fill="white" opacity=".9"/>
+      <circle cx="30" cy="29" r="2.2" fill="white" opacity=".9"/>
+      <circle cx="19" cy="34" r="2.2" fill="white" opacity=".9"/>
+      <circle cx="8"  cy="29" r="2.2" fill="white" opacity=".9"/>
+      <circle cx="4"  cy="19" r="2.2" fill="white" opacity=".9"/>
+      <circle cx="8"  cy="9"  r="2.2" fill="white" opacity=".9"/>
+      <!-- center dot -->
+      <circle cx="19" cy="19" r="2.6" fill="white"/>
+      <!-- connecting lines -->
+      <line x1="19" y1="4"  x2="19" y2="34" stroke="white" stroke-width="1" opacity=".35"/>
+      <line x1="4"  y1="19" x2="34" y2="19" stroke="white" stroke-width="1" opacity=".35"/>
+      <line x1="8"  y1="9"  x2="30" y2="29" stroke="white" stroke-width="1" opacity=".35"/>
+      <line x1="30" y1="9"  x2="8"  y2="29" stroke="white" stroke-width="1" opacity=".35"/>
+      <!-- spokes to center -->
+      <line x1="19" y1="4"  x2="19" y2="19" stroke="white" stroke-width="1.2" opacity=".7"/>
+      <line x1="30" y1="9"  x2="19" y2="19" stroke="white" stroke-width="1.2" opacity=".7"/>
+      <line x1="34" y1="19" x2="19" y2="19" stroke="white" stroke-width="1.2" opacity=".7"/>
+      <line x1="30" y1="29" x2="19" y2="19" stroke="white" stroke-width="1.2" opacity=".7"/>
+      <line x1="19" y1="34" x2="19" y2="19" stroke="white" stroke-width="1.2" opacity=".7"/>
+      <line x1="8"  y1="29" x2="19" y2="19" stroke="white" stroke-width="1.2" opacity=".7"/>
+      <line x1="4"  y1="19" x2="19" y2="19" stroke="white" stroke-width="1.2" opacity=".7"/>
+      <line x1="8"  y1="9"  x2="19" y2="19" stroke="white" stroke-width="1.2" opacity=".7"/>
+    </svg>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal">
+    <h1 class="modal-title">Đăng nhập</h1>
+
+    <!-- Username -->
+    <div class="field">
+      <div class="field-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2c3e6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        Tên đăng nhập
+      </div>
+      <input type="text" placeholder="Nhập tên đăng nhập" />
+    </div>
+
+    <!-- Password -->
+    <div class="field">
+      <div class="field-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2c3e6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        Mật khẩu
+      </div>
+      <input type="password" placeholder="Nhập mật khẩu" />
+    </div>
+
+    <!-- Remember -->
+    <div class="remember">
+      <input type="checkbox" id="remember" />
+      <label for="remember">Ghi nhớ tên đăng nhập</label>
+    </div>
+
+    <!-- CTA -->
+    <button class="btn-login">Đăng nhập</button>
+
+    <!-- Links -->
+    <div class="links">
+      <a href="#">Tôi quên mật khẩu (email đã đăng ký)</a>
+      <a href="#">Đăng ký</a>
+    </div>
+  </div>
+
+</body>
+</html>
