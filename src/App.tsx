@@ -6,6 +6,11 @@ import { ProductCard } from "./components/ProductCard";
 import { Card, FunctionProps, UserCard, UserCard2 } from "./components/UserCard";
 import SearchBox from "./components/SearchBox";
 import { Greeting } from "./components/Greeting";
+import FormDemo from "./components/FormDemo";
+import TodoList from "./components/TodoList";
+import ToggleDemo from "./components/ToggleDemo";
+import PostList from "./components/PostList";
+import ControllerdForm from "./components/ControllerdForm";
 
 // function App() {
 //   return <Login />
@@ -35,6 +40,7 @@ export default function App() {
 
   const [count, setCount] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showPosts, setShowPosts] = useState(true);
 
 
   const handleIncrement = () => setCount((c) => c + 1);
@@ -66,6 +72,37 @@ export default function App() {
           Login
         </button>
         <button onClick={() => setIsLoggedIn(false)}>Logout</button>
+      </div>
+
+      <div>
+        <h1>Counter with Object State</h1>
+        <FormDemo />
+      </div>
+
+      <div>
+        <h1>Todo List</h1>
+        <TodoList />
+      </div>
+
+      <div>
+        <h1>User Card</h1>
+        <ToggleDemo />
+      </div>
+
+      <div>
+        <h2>Toggle PostList</h2>
+
+        <button onClick={() => setShowPosts(!showPosts)}>
+          {showPosts ? "Ẩn PostList" : "Hiện PostList"}
+        </button>
+
+        <hr />
+
+        {<PostList />}
+      </div>
+
+      <div>
+        <ControllerdForm />
       </div>
 
     </div>
