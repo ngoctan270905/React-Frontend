@@ -295,3 +295,61 @@ input[type='email']:not(:placeholder-shown) {
 .footer-link a:hover {
   color: #60a5fa;
 }
+
+/* Container error/success */
+.error-message,
+.success-message {
+    display: flex;                /* căn giữa theo hàng */
+    align-items: center;          /* căn giữa theo chiều dọc */
+    justify-content: center;      /* căn giữa theo chiều ngang */
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Error */
+.error-message {
+    color: #b80000;               /* chữ đỏ */
+    background-color: #ffe5e5;    /* nền hồng nhạt */
+    border: 1px solid #b80000;    /* viền đỏ */
+}
+
+/* Thêm icon dấu chấm than trước text */
+.error-message::before {
+    content: "⚠️";                /* icon cảnh báo */
+    margin-right: 8px;
+}
+
+/* Success */
+.success-message {
+    color: #007700;               /* chữ xanh */
+    background-color: #e5ffe5;    /* nền xanh nhạt */
+    border: 1px solid #007700;    /* viền xanh */
+}
+
+/* Thêm icon dấu tích trước text */
+.success-message::before {
+    content: "✔️";
+    margin-right: 8px;
+}
+
+/* Button căn giữa */
+.btn-cta {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-cta:hover {
+    background-color: #0056b3;
+}

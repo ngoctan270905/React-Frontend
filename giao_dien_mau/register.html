@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create an Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { 
+        box-sizing: border-box; 
+        margin: 0; 
+        padding: 0; 
+    }
+
+    :root {
+      --bg:           #060810;
+      --card:         #111420;
+      --card-border:  rgba(255,255,255,0.07);
+      --input-bg:     #181d2e;
+      --input-border: rgba(255,255,255,0.08);
+      --input-focus:  #3b82f6;
+      --accent:       #3b82f6;
+      --text:         #f1f5ff;
+      --muted:        rgba(255,255,255,0.38);
+      --divider:      rgba(255,255,255,0.12);
+    }
+
+    body {
+      font-family: 'Sora', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── SPACE CANVAS ──────────────────────────────── */
+    #space {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .nebula-1 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%);
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .nebula-2 {
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, rgba(120,60,220,0.14) 0%, transparent 70%);
+      bottom: -80px; left: 30%;
+      animation: drift 15s ease-in-out infinite alternate-reverse;
+    }
+    .nebula-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,180,200,0.10) 0%, transparent 70%);
+      top: 30%; right: 5%;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(30px, 20px); }
+    }
+
+    /* ── MODAL ─────────────────────────────────────── */
+    .modal-wrap {
+      position: relative;
+      z-index: 10;
+      animation: fadeUp .7s cubic-bezier(.22,.88,.36,1) both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 44px 42px 38px;
+      width: 380px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 32px 80px rgba(0,0,0,0.65),
+        0 0 60px rgba(59,130,246,0.07);
+      backdrop-filter: blur(14px);
+    }
+
+    .modal h1 {
+      text-align: center;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.02em;
+      margin-bottom: 30px;
+    }
+
+    /* ── FORM FIELDS ───────────────────────────────── */
+    .field { margin-bottom: 18px; }
+    
+    label {
+      display: block;
+      font-size: .80rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    
+    input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'Sora', sans-serif;
+      font-size: .84rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    
+    input::placeholder { color: var(--muted); }
+    
+    input:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
+
+    .eye-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      transition: color .15s;
+    }
+    .eye-btn:hover { color: var(--text); }
+
+    /* ── CTA BUTTON ────────────────────────────────── */
+    .btn-cta {
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px;
+      background: var(--accent);
+      border: none;
+      border-radius: 11px;
+      color: #fff;
+      font-family: 'Sora', sans-serif;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .01em;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform .16s, box-shadow .16s, background .16s;
+      box-shadow: 0 4px 22px rgba(59,130,246,0.38);
+    }
+    
+    .btn-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    
+    .btn-cta:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 30px rgba(59,130,246,0.50);
+    }
+
+    /* ── FOOTER LINK ───────────────────────────────── */
+    .footer-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+    .footer-link a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color .15s;
+    }
+    .footer-link a:hover { color: #60a5fa; }
+  </style>
+</head>
+<body>
+
+  <canvas id="space"></canvas>
+
+  <div class="nebula nebula-1"></div>
+  <div class="nebula nebula-2"></div>
+  <div class="nebula nebula-3"></div>
+
+  <div class="modal-wrap">
+    <div class="modal">
+      <h1>Create an account</h1>
+
+      <div class="field">
+        <label for="fullname">Full Name</label>
+        <div class="input-wrap">
+          <input type="text" id="fullname" placeholder="Enter your full name" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+          <input type="email" id="email" placeholder="Enter your email" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="password" placeholder="Create a password" />
+          <button class="eye-btn" onclick="togglePwd()" aria-label="Toggle password">
+            <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-cta">Sign Up</button>
+
+      <p class="footer-link">Already Have An Account? <a href="#">Log In</a></p>
+    </div>
+  </div>
+
+  <script>
+    /* ── STAR FIELD ANIMATION ── */
+    const canvas = document.getElementById('space');
+    const ctx    = canvas.getContext('2d');
+    let W, H, stars = [], trails = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', () => { resize(); initStars(); });
+
+    function rand(a, b) { return Math.random() * (b - a) + a; }
+
+    function initStars() {
+      stars = [];
+      const n = Math.floor(W * H / 2200);
+      for (let i = 0; i < n; i++) {
+        stars.push({
+          x: rand(0, W), y: rand(0, H),
+          r: rand(.2, 1.4), a: rand(.2, 1),
+          da: rand(.002, .006) * (Math.random() < .5 ? 1 : -1)
+        });
+      }
+    }
+
+    function spawnTrail() {
+      const edge = Math.random() < .5;
+      trails.push({
+        x: edge ? rand(0, W) : rand(0, W * .3),
+        y: edge ? rand(0, H * .4) : rand(0, H * .3),
+        vx: rand(2.5, 5.5), vy: rand(1.2, 3.0),
+        len: rand(60, 160), life: 1, fade: rand(.012, .022), width: rand(.5, 1.4)
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      stars.forEach(s => {
+        s.a += s.da;
+        if (s.a > 1 || s.a < .1) s.da *= -1;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(210,225,255,${s.a})`;
+        ctx.fill();
+      });
+      trails.forEach(t => {
+        const grad = ctx.createLinearGradient(t.x - t.vx * t.len/5, t.y - t.vy * t.len/5, t.x, t.y);
+        grad.addColorStop(0, `rgba(180,215,255,0)`);
+        grad.addColorStop(1, `rgba(200,225,255,${t.life * .7})`);
+        ctx.beginPath();
+        ctx.moveTo(t.x - t.vx * t.len/5, t.y - t.vy * t.len/5);
+        ctx.lineTo(t.x, t.y);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = t.width;
+        ctx.stroke();
+        t.x += t.vx; t.y += t.vy; t.life -= t.fade;
+      });
+      trails = trails.filter(t => t.life > 0);
+    }
+
+    let frame = 0;
+    function loop() {
+      draw();
+      if (frame++ % 55 === 0) spawnTrail();
+      requestAnimationFrame(loop);
+    }
+
+    resize();
+    initStars();
+    loop();
+
+    /* ── PASSWORD TOGGLE ── */
+    function togglePwd() {
+      const inp = document.getElementById('password');
+      const icon = document.getElementById('eye-icon');
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      icon.innerHTML = show
+        ? `<line x1="1" y1="1" x2="23" y2="23"/><path d="M10.73 5.08A10.43 10.43 0 0112 5c7 0 11 7 11 7a13.16 13.16 0 01-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 001 12s4 7 11 7a9.74 9.74 0 005.39-1.61"/><circle cx="12" cy="12" r="3"/>`
+        : `<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>`;
+    }
+  </script>
+</body>
+</html>
