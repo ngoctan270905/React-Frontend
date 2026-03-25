@@ -1,0 +1,246 @@
+/* =========================================
+   CSS DÀNH RIÊNG CHO TRANG SHOPPING BAG
+   ========================================= */
+
+.cart-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 60px 20px 100px;
+}
+
+.cart-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 50px;
+    letter-spacing: 0.5px;
+}
+
+/* Layout chính: 2 cột (Danh sách SP - Tóm tắt đơn) */
+.cart-layout {
+    display: grid;
+    grid-template-columns: 2fr 1.1fr; /* Cột trái to hơn cột phải */
+    gap: 60px;
+    align-items: start;
+}
+
+/* --- Cột Trái: Lưới Sản Phẩm --- */
+.cart-items-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.cart-card {
+    position: relative;
+    border: 1px solid #e5e5e7;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.remove-btn:hover {
+    color: #000;
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
+.item-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #111;
+}
+
+.item-variant {
+    font-size: 11px;
+    color: #888;
+    text-transform: capitalize;
+}
+
+.item-image {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.item-image img {
+    width: 85%;
+    height: 85%;
+    object-fit: cover;
+    mix-blend-mode: darken;
+}
+
+.quantity-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.quantity-pill {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e5e5e7;
+    border-radius: 30px;
+    padding: 6px 15px;
+    gap: 20px;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #555;
+}
+
+.qty-btn:hover {
+    color: #000;
+}
+
+.qty-num {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e5e5e7;
+    padding-top: 20px;
+    margin-top: auto; /* Đẩy footer xuống đáy card */
+}
+
+.subtotal-label {
+    font-size: 12px;
+    color: #666;
+}
+
+.subtotal-price {
+    font-size: 13px;
+    font-weight: 500;
+    color: #111;
+}
+
+/* --- Cột Phải: Order Summary --- */
+.cart-summary-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.summary-box {
+    border: 1px solid #e5e5e7;
+}
+
+.summary-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e7;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    font-size: 13px;
+    color: #444;
+}
+
+.summary-row.total-row {
+    border-top: 1px solid #e5e5e7;
+    font-weight: 600;
+    color: #111;
+}
+
+.gift-box {
+    border: 1px solid #e5e5e7;
+    padding: 20px;
+}
+
+.gift-box label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #111;
+}
+
+.gift-box textarea {
+    width: 100%;
+    border: 1px solid #e5e5e7;
+    resize: vertical;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.gift-box textarea:focus {
+    border-color: #000;
+}
+
+.checkout-actions {
+    margin-top: 10px;
+}
+
+.shipping-note {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.checkout-btn {
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 18px 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.checkout-btn:hover {
+    background-color: #333;
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 1024px) {
+    .cart-layout {
+        grid-template-columns: 1fr; /* Stack 1 cột trên màn hình nhỏ */
+        gap: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cart-items-grid {
+        grid-template-columns: 1fr; /* Sản phẩm xếp dọc trên mobile */
+    }
+}

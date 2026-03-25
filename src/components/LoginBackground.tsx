@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import '../pages/Login.css'
+import '../styles/Login.css'
 
 type Star = { x: number; y: number; r: number; a: number; da: number }
 type Trail = {

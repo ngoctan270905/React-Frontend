@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEIN. | Shopping Bag</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+
+    <div class="announcement-bar">
+        Complimentary U.S. No-Rush Shipping on orders of $95 or more. Shop now
+    </div>
+
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">CEIN.</div>
+            <nav class="desktop-nav">
+                <a href="shop.html">Shop</a>
+                <a href="#">New Arrivals</a>
+                <a href="#">Sales</a>
+                <a href="#">Journal</a>
+            </nav>
+            <div class="header-icons">
+                <i class="ph ph-magnifying-glass"></i>
+                <i class="ph ph-map-pin hide-mobile"></i>
+                <i class="ph ph-user hide-mobile"></i>
+                <i class="ph ph-heart"></i>
+                <div class="cart-icon">
+                    <i class="ph ph-shopping-bag"></i>
+                    <span class="cart-badge">2</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="cart-page section-padding">
+        <h1 class="cart-title">Shopping Bag</h1>
+
+        <div class="cart-layout">
+            
+            <div class="cart-items-grid">
+                
+                <div class="cart-card">
+                    <button class="remove-btn"><i class="ph ph-x"></i></button>
+                    <div class="card-header">
+                        <h3 class="item-title">Alpaca Wool Crewneck Sweater</h3>
+                        <p class="item-variant">Beige</p>
+                    </div>
+                    <div class="item-image">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/13438620606458714538_0" alt="Sweater">
+                    </div>
+                    <div class="quantity-wrapper">
+                        <div class="quantity-pill">
+                            <button class="qty-btn"><i class="ph ph-minus"></i></button>
+                            <span class="qty-num">1</span>
+                            <button class="qty-btn"><i class="ph ph-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="subtotal-label">Subtotal</span>
+                        <span class="subtotal-price">$248</span>
+                    </div>
+                </div>
+
+                <div class="cart-card">
+                    <button class="remove-btn"><i class="ph ph-x"></i></button>
+                    <div class="card-header">
+                        <h3 class="item-title">Single Origin Cashmere Crop...</h3>
+                        <p class="item-variant">Apricot / Large</p>
+                    </div>
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1580651315530-69c8e0026377?auto=format&fit=crop&w=600&q=80" alt="Cardigan">
+                    </div>
+                    <div class="quantity-wrapper">
+                        <div class="quantity-pill">
+                            <button class="qty-btn"><i class="ph ph-minus"></i></button>
+                            <span class="qty-num">1</span>
+                            <button class="qty-btn"><i class="ph ph-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="subtotal-label">Subtotal</span>
+                        <span class="subtotal-price">$298</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="cart-summary-panel">
+                
+                <div class="summary-box">
+                    <h3 class="summary-title">Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$546</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>Bag Total</span>
+                        <span>$546</span> 
+                    </div>
+                </div>
+
+                <div class="gift-box">
+                    <label for="gift-msg">Add a gift message to your order</label>
+                    <textarea id="gift-msg" rows="4"></textarea>
+                </div>
+
+                <div class="checkout-actions">
+                    <p class="shipping-note">Shipping & taxes calculated at checkout</p>
+                    <button class="checkout-btn">Go To Checkout</button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>CONTACT US</h4>
+                    <ul>
+                        <li>+1 (844) 326-6000</li>
+                        <li>Email Us</li>
+                        <li>Mon-Fri 9am-3pm PT</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>CUSTOMERS</h4>
+                    <ul>
+                        <li><a href="#">Start a Return</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Catalogs and Mailers</a></li>
+                        <li><a href="#">About Group Gifting</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>COMPANY</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Discover Revive</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col newsletter">
+                    <h4>Get the latest new from us</h4>
+                    <form>
+                        <input type="email" placeholder="Enter your email address" required>
+                        <p class="terms">By signing up, you agree to our <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>.</p>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>©CEIN.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
