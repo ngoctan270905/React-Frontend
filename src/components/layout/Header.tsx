@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
-import '../styles/Home.css'
+import '../../styles/Home.css'
+import { useMe } from '../../hooks/useMe'
 
 export default function Header() {
+    const { data: user } = useMe()
     return (
         <>
             <div className="announcement-bar">
@@ -10,7 +12,9 @@ export default function Header() {
 
             <header className="header">
                 <div className="header-container">
-                    <div className="logo">ABC</div>
+                    <Link to="/" className="logo-link">
+                        <div className="logo">ABC</div>
+                    </Link>
 
                     <nav className="desktop-nav">
                         <Link to="/shop">Cửa hàng</Link>
@@ -22,7 +26,9 @@ export default function Header() {
                     <div className="header-icons">
                         <i className="ph ph-magnifying-glass"></i>
                         <i className="ph ph-map-pin hide-mobile"></i>
-                        <i className="ph ph-user hide-mobile"></i>
+                        <Link to="/account" title={user?.data.fullname || ''}>
+                            <i className="ph ph-user hide-mobile"></i>
+                        </Link>
                         <i className="ph ph-heart"></i>
                         <div className="cart-icon">
                             <i className="ph ph-shopping-bag"></i>

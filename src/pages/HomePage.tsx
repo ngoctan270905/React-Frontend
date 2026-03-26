@@ -1,11 +1,11 @@
-import Header from '../components/Header'
-import HeroSection from '../components/HeroSection'
-import CategoriesSection from '../components/CategoriesSection'
-import ProductsSection from '../components/ProductsSection'
-import EditorialSection from '../components/EditorialSection'
-import PhilosophySection from '../components/PhilosophySection'
-import InstagramSection from '../components/InstagramSection'
-import Footer from '../components/Footer'
+import Header from '../components/layout/Header'
+import HeroSection from '../components/home/HeroSection'
+import CategoriesSection from '../components/home/CategoriesSection'
+import ProductsSection from '../components/home/ProductsSection'
+import EditorialSection from '../components/home/EditorialSection'
+import PhilosophySection from '../components/home/PhilosophySection'
+import InstagramSection from '../components/home/InstagramSection'
+import Footer from '../components/layout/Footer'
 
 export default function HomePage() {
   return (

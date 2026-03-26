@@ -1,183 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create an Account</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEIN. | Đăng Nhập</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <link rel="stylesheet" href="login.css">
+  
 </head>
+
 <body>
+  <div class="page-body">
 
-  <!-- Space canvas -->
-  <canvas id="space"></canvas>
-
-  <!-- Nebula glows -->
-  <div class="nebula nebula-1"></div>
-  <div class="nebula nebula-2"></div>
-  <div class="nebula nebula-3"></div>
-
-  <!-- Modal -->
-  <div class="modal-wrap">
-    <div class="modal">
-      <h1>Create an account</h1>
-
-      <!-- Social -->
-      <div class="socials">
-        <button class="btn-social">
-          <!-- Google G -->
-          <svg width="18" height="18" viewBox="0 0 18 18"><g><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.859-3.048.859-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/><path d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.347 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/></g></svg>
-          Google
-        </button>
-        <button class="btn-social">
-          <!-- Facebook f -->
-          <svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#1877F2"/><path d="M12.6 11.4l.4-2.6h-2.5V7.2c0-.7.3-1.4 1.4-1.4H13V3.5s-1.1-.2-2.2-.2c-2.2 0-3.7 1.4-3.7 3.9v2.2H4.8v2.6h2.3V18c.6.1 1.1.1 1.7.1s1.1 0 1.7-.1v-6.6h2.1z" fill="#fff"/></svg>
-          Facebook
-        </button>
+    <!-- ── LEFT: Image Panel ── -->
+    <div class="panel-image">
+      <img src="https://images.unsplash.com/photo-1611042553365-9b101441c135?auto=format&fit=crop&w=1200&q=80"
+        alt="CEIN Fashion">
+      <div class="panel-image-overlay"></div>
+      <div class="panel-image-text">
+        <div class="eyebrow">CEIN. Vietnam</div>
+        <h2>Chào Mừng<br>Trở Lại</h2>
+        <p>Khám phá những thiết kế vượt thời gian, được làm ra để tồn tại lâu dài và nuôi dưỡng phong cách sống của bạn.
+        </p>
       </div>
+    </div>
 
-      <!-- Divider -->
-      <div class="divider">Or</div>
+    <!-- ── RIGHT: Form Panel ── -->
+    <div class="panel-form">
 
-      <!-- Email -->
-      <div class="field">
-        <label for="email">Email</label>
-        <div class="input-wrap">
-          <input type="email" id="email" value="balamia@gmail.com" placeholder="Enter your email" />
+      <!-- ── LOGIN FORM ── -->
+      <div id="panel-login" class="form-panel active">
+        <div class="form-heading">
+          <h1>Đăng nhập tài khoản</h1>
+          <p>Nhập thông tin để tiếp tục mua sắm cùng CEIN.</p>
         </div>
-      </div>
 
-      <!-- Password -->
-      <div class="field">
-        <div class="field-header">
-          <label for="password">Password</label>
-          <a href="#" class="forgot">Forgot ?</a>
+        <div class="field">
+          <label>Email</label>
+          <div class="input-wrap" id="login-email-wrap">
+            <i class="ph ph-envelope input-icon"></i>
+            <input type="email" id="login-email" placeholder="email@example.com" autocomplete="email">
+          </div>
+          <div class="field-error" id="login-email-err">Vui lòng nhập email hợp lệ.</div>
         </div>
-        <div class="input-wrap">
-          <input type="password" id="password" placeholder="Enter your password" />
-          <button class="eye-btn" onclick="togglePwd()" aria-label="Toggle password">
-            <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
-              <circle cx="12" cy="12" r="3"/>
+
+        <div class="field">
+          <label>Mật Khẩu</label>
+          <div class="input-wrap" id="login-pw-wrap">
+            <i class="ph ph-lock input-icon"></i>
+            <input type="password" id="login-pw" placeholder="Nhập mật khẩu" autocomplete="current-password">
+            <i class="ph ph-eye toggle-pw"></i>
+          </div>
+          <div class="field-error" id="login-pw-err">Vui lòng nhập mật khẩu.</div>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox-wrap">
+            <input type="checkbox" checked>
+            <span>Ghi nhớ đăng nhập</span>
+          </label>
+          <span class="forgot-link" onclick="openForgot()">Quên mật khẩu?</span>
+        </div>
+
+        <button class="btn-submit" id="btn-login" onclick="handleLogin()">
+          <span class="btn-text">Đăng Nhập</span>
+          <span class="btn-loader">
+            <div class="spinner"></div>
+          </span>
+        </button>
+
+        <div class="divider"><span>Hoặc tiếp tục với</span></div>
+
+        <div class="social-btns">
+          <button class="btn-social">
+            <!-- Google icon -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4" />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853" />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                fill="#FBBC05" />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335" />
             </svg>
+            Google
+          </button>
+          <button class="btn-social">
+            <!-- Facebook icon -->
+            <svg viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
+            Facebook
           </button>
         </div>
+
+        <p class="switch-prompt">
+          Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a>
+        </p>
       </div>
 
-      <!-- CTA -->
-      <button class="btn-cta">Create account</button>
+    
 
-      <!-- Footer -->
-      <p class="footer-link">Already Have An Account ? <a href="#">Log In</a></p>
     </div>
   </div>
 
-  <script>
-    /* ── STAR FIELD ─────────────────────────────────── */
-    const canvas = document.getElementById('space');
-    const ctx    = canvas.getContext('2d');
+  <!-- ── Forgot Password Overlay ── -->
+  <div class="forgot-overlay" id="forgotOverlay">
+    <div class="forgot-modal">
+      <h3>Quên Mật Khẩu?</h3>
+      <p>Nhập địa chỉ email của bạn và chúng tôi sẽ gửi hướng dẫn đặt lại mật khẩu.</p>
 
-    let W, H, stars = [], trails = [];
+      <div class="field">
+        <label>Email</label>
+        <div class="input-wrap">
+          <i class="ph ph-envelope input-icon"></i>
+          <input type="email" id="forgot-email" placeholder="email@example.com">
+        </div>
+      </div>
 
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', () => { resize(); initStars(); });
+      <div class="forgot-modal-actions">
+        <button class="btn-submit" style="margin:0;flex:1;">
+          <span class="btn-text">Gửi Hướng Dẫn</span>
+          <span class="btn-loader">
+            <div class="spinner"></div>
+          </span>
+        </button>
+        <button"
+          style="padding:14px 20px;border:1px solid var(--border-color);background:none;font-size:13px;cursor:pointer;font-family:var(--font-main);transition:background 0.2s;"
+          onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">Hủy</button>
+      </div>
+    </div>
+  </div>
 
-    function rand(a, b) { return Math.random() * (b - a) + a; }
-
-    /* static stars */
-    function initStars() {
-      stars = [];
-      const n = Math.floor(W * H / 2200);
-      for (let i = 0; i < n; i++) {
-        stars.push({
-          x: rand(0, W), y: rand(0, H),
-          r: rand(.2, 1.4),
-          a: rand(.2, 1),
-          da: rand(.002, .006) * (Math.random() < .5 ? 1 : -1)
-        });
-      }
-      /* star clusters – dense patches */
-      for (let c = 0; c < 5; c++) {
-        const cx = rand(0, W), cy = rand(0, H);
-        for (let i = 0; i < 60; i++) {
-          stars.push({
-            x: cx + rand(-80, 80), y: cy + rand(-80, 80),
-            r: rand(.15, .8), a: rand(.15, .7),
-            da: rand(.001, .004) * (Math.random() < .5 ? 1 : -1)
-          });
-        }
-      }
-    }
-
-    /* shooting-star trails */
-    function spawnTrail() {
-      const edge = Math.random() < .5;
-      trails.push({
-        x:    edge ? rand(0, W) : rand(0, W * .3),
-        y:    edge ? rand(0, H * .4) : rand(0, H * .3),
-        vx:   rand(2.5, 5.5),
-        vy:   rand(1.2, 3.0),
-        len:  rand(60, 160),
-        life: 1, fade: rand(.012, .022),
-        width: rand(.5, 1.4)
-      });
-    }
-
-    function drawStars() {
-      stars.forEach(s => {
-        s.a += s.da;
-        if (s.a > 1 || s.a < .1) s.da *= -1;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(210,225,255,${s.a})`;
-        ctx.fill();
-      });
-    }
-
-    function drawTrails() {
-      trails.forEach(t => {
-        const grad = ctx.createLinearGradient(t.x - t.vx * t.len / 5, t.y - t.vy * t.len / 5, t.x, t.y);
-        grad.addColorStop(0, `rgba(180,215,255,0)`);
-        grad.addColorStop(1, `rgba(200,225,255,${t.life * .7})`);
-        ctx.beginPath();
-        ctx.moveTo(t.x - t.vx * t.len / 5, t.y - t.vy * t.len / 5);
-        ctx.lineTo(t.x, t.y);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth   = t.width;
-        ctx.stroke();
-        t.x += t.vx; t.y += t.vy; t.life -= t.fade;
-      });
-      trails = trails.filter(t => t.life > 0 && t.x < W + 50 && t.y < H + 50);
-    }
-
-    let frame = 0;
-    function loop() {
-      requestAnimationFrame(loop);
-      ctx.clearRect(0, 0, W, H);
-      drawStars();
-      drawTrails();
-      frame++;
-      if (frame % 55 === 0) spawnTrail();
-    }
-
-    resize();
-    initStars();
-    for (let i = 0; i < 3; i++) spawnTrail();
-    loop();
-
-    /* ── PASSWORD TOGGLE ─────────────────────────── */
-    function togglePwd() {
-      const inp  = document.getElementById('password');
-      const icon = document.getElementById('eye-icon');
-      const show = inp.type === 'password';
-      inp.type = show ? 'text' : 'password';
-      icon.innerHTML = show
-        ? `<line x1="1" y1="1" x2="23" y2="23"/><path d="M10.73 5.08A10.43 10.43 0 0112 5c7 0 11 7 11 7a13.16 13.16 0 01-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 001 12s4 7 11 7a9.74 9.74 0 005.39-1.61"/><circle cx="12" cy="12" r="3"/>`
-        : `<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>`;
-    }
-  </script>
+  <!-- ── Toast ── -->
+  <div class="toast" id="toast">
+    <i class="ph ph-check-circle"></i>
+    <span id="toast-msg">Thành công!</span>
+  </div>
 </body>
+
 </html>

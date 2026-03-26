@@ -104,6 +104,11 @@ img {
     color: var(--text-gray);
 }
 
+.header-icons a {
+    display: inline-flex;       /* giống inline-block nhưng hỗ trợ flex */
+    align-items: center;        /* canh icon giữa theo trục dọc */
+}
+
 .cart-icon {
     position: relative;
     display: flex;

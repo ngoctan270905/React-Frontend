@@ -1,9 +1,9 @@
-import LoginBackground from '../components/LoginBackground'
-import LoginForm from '../components/LoginForm'
+import LoginBackground from '../components/auth/LoginBackground'
+import LoginForm from '../components/auth/LoginForm'
 
 export default function Login() {
   return (
-    <div className="login">
+    <div className="page-body">
       <LoginBackground />
       <LoginForm />
     </div>
