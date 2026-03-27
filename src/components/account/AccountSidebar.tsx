@@ -7,9 +7,10 @@ import { useNavigate } from "react-router-dom";
 type Props = {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  onOpenModal: () => void;
 };
 
-export default function AccountSidebar({ activeTab, setActiveTab }: Props) {
+export default function AccountSidebar({ onOpenModal, activeTab, setActiveTab }: Props) {
   const navigate = useNavigate();
 
   // gắn interface LogoutResponse
@@ -32,7 +33,7 @@ export default function AccountSidebar({ activeTab, setActiveTab }: Props) {
   return (
     <aside className="sidebar">
 
-      <UserCard />
+      <UserCard onOpenModal={onOpenModal} />
 
       <SidebarMenu 
         activeTab={activeTab} 
@@ -42,7 +43,7 @@ export default function AccountSidebar({ activeTab, setActiveTab }: Props) {
       <button
         className="logout-btn"
         onClick={() => logoutMutation.mutate()}
-        disabled={logoutMutation.isPending} // disable khi đang call API
+        disabled={logoutMutation.isPending}
       >
         {logoutMutation.isPending ? "Đang đăng xuất..." : <><i className="ph ph-sign-out"></i> Đăng Xuất</>}
       </button>

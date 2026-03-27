@@ -13,9 +13,11 @@ import AddressTab from "../components/account/AddressTab";
 import NotificationsTab from "../components/account/NotificationsTab";
 
 import "../styles/Account.css";
+import AvatarModal from "../components/account/AvatarModal";
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
@@ -23,7 +25,7 @@ export default function AccountPage() {
       <Breadcrumb />
 
       <div className="page-wrapper">
-        <AccountSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <AccountSidebar activeTab={activeTab} setActiveTab={setActiveTab} onOpenModal={() => setIsModalOpen(true)} />
 
         <main className="main-content">
           {activeTab === "overview" && <OverviewTab />}
@@ -36,6 +38,8 @@ export default function AccountPage() {
       </div>
 
       <Footer />
+
+      {isModalOpen && <AvatarModal onClose={() => setIsModalOpen(false)} />}
     </>
   );
 }

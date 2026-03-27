@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 import '../../styles/Home.css'
-import { useMe } from '../../hooks/useMe'
-
+import { useUser } from '../../context/UserContext'
 export default function Header() {
-    const { data: user } = useMe()
+    const { user } = useUser()
+    console.log("Lấy dữ liệu user từ Context:", user)
+    
     return (
         <>
             <div className="announcement-bar">

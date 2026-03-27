@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useUser } from '../../context/UserContext'
 
 export default function ProfileTab() {
   const [isEditing, setIsEditing] = useState(false);
+  const { user } = useUser()
+  console.log("Lấy dữ liệu user từ Context:", user)
 
   return (
     <div id="tab-profile" className="tab-content active">
@@ -18,15 +21,15 @@ export default function ProfileTab() {
           <div className="info-grid" id="infoGrid">
             <div className="info-item">
               <div className="info-label">Họ và Tên</div>
-              <div className="info-val">Nguyễn Minh Anh</div>
+              <div className="info-val">{user?.data.fullname}</div>
             </div>
             <div className="info-item">
               <div className="info-label">Số Điện Thoại</div>
-              <div className="info-val">+84 912 345 678</div>
+              <div className="info-val">{user?.data.phone_number}</div>
             </div>
             <div className="info-item">
               <div className="info-label">Email</div>
-              <div className="info-val">minhanhstyle@gmail.com</div>
+              <div className="info-val">{user?.data.email}</div>
             </div>
             <div className="info-item">
               <div className="info-label">Ngày Sinh</div>

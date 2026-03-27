@@ -537,6 +537,97 @@
             .wishlist-grid { grid-template-columns: repeat(2, 1fr); }
             .order-product-img { width: 60px; height: 75px; }
         }
+
+        /* ── Modal Styles ── */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: none; /* Ẩn mặc định */
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: var(--bg-white);
+    width: 90%;
+    max-width: 400px;
+    padding: 24px;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-header h3 {
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modal-body {
+    text-align: center;
+}
+
+.modal-avatar-preview {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.modal-avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.modal-btn {
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: 1px solid var(--border-color);
+    font-family: var(--font-main);
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s;
+}
+
+.modal-btn:hover {
+    background: var(--bg-light);
+    border-color: var(--text-black);
+}
+
+.btn-danger {
+    color: #dc2626;
+}
+
+.btn-danger:hover {
+    background: #fef2f2;
+    border-color: #dc2626;
+}
     </style>
 </head>
 <body>
@@ -580,7 +671,9 @@
             <div class="user-card">
                 <div class="avatar-wrap">
                     <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80" alt="Avatar">
-                    <div class="avatar-edit"><i class="ph ph-camera"></i></div>
+                    <div class="avatar-edit" onclick="openAvatarModal()">
+                        <i class="ph ph-camera"></i>
+                    </div>
                 </div>
                 <h3>Nguyễn Minh Anh</h3>
                 <span>minhanhstyle@gmail.com</span>
@@ -1035,6 +1128,32 @@
         </div>
     </footer>
 
+    <div id="avatarModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Cập nhật ảnh đại diện</h3>
+            <i class="ph ph-x" onclick="closeAvatarModal()" style="cursor: pointer; font-size: 20px;"></i>
+        </div>
+        <div class="modal-body">
+            <div class="modal-avatar-preview">
+                <img id="previewImg" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80" alt="Preview">
+            </div>
+            <div class="modal-actions-list">
+                <button class="modal-btn" onclick="document.getElementById('fileInput').click()">
+                    <i class="ph ph-upload-simple"></i> Tải ảnh mới lên
+                </button>
+                <button class="modal-btn btn-danger">
+                    <i class="ph ph-trash"></i> Gỡ ảnh hiện tại
+                </button>
+            </div>
+            <input type="file" id="fileInput" hidden accept="image/*">
+        </div>
+        <div class="modal-footer">
+            <button class="btn-sm btn-dark" style="width: 100%; padding: 12px;" onclick="closeAvatarModal()">Lưu thay đổi</button>
+        </div>
+    </div>
+</div>
+
     <script>
         function switchTab(e, name) {
             e.preventDefault();
@@ -1084,6 +1203,32 @@
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             e.currentTarget.classList.add('active');
         }
+
+        function openAvatarModal() {
+    document.getElementById('avatarModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi mở modal
+}
+
+function closeAvatarModal() {
+    document.getElementById('avatarModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Đóng modal khi click ra ngoài vùng trắng
+window.onclick = function(event) {
+    const modal = document.getElementById('avatarModal');
+    if (event.target == modal) {
+        closeAvatarModal();
+    }
+}
+
+// Xử lý xem trước ảnh khi chọn file (Logic thêm)
+document.getElementById('fileInput').onchange = function(evt) {
+    const [file] = this.files;
+    if (file) {
+        document.getElementById('previewImg').src = URL.createObjectURL(file);
+    }
+}
     </script>
 </body>
 </html>
