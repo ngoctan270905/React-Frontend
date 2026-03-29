@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sneat Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sidebar-w: 260px;
+    --header-h: 64px;
+    --purple: #7367f0;
+    --purple-light: #ebe9fd;
+    --purple-pale: #f4f3fd;
+    --red: #ea5455;
+    --green: #28c76f;
+    --orange: #ff9f43;
+    --blue: #00cfe8;
+    --yellow: #ffc107;
+    --cyan: #0dcaf0;
+    --sidebar-bg: #fff;
+    --body-bg: #f8f7fa;
+    --border: #ebebeb;
+    --text-main: #444050;
+    --text-muted: #b4b2b7;
+    --text-section: #a5a3ae;
+    --shadow: 0 4px 24px 0 rgba(34,41,47,.1);
+    --font: 'Public Sans', sans-serif;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--body-bg);
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    border-left: 3px solid var(--purple);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  /* Logo */
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 22px 20px 18px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--purple);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 15px;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-size: 20px; font-weight: 700;
+    color: var(--text-main); letter-spacing: -0.5px;
+  }
+
+  /* Nav */
+  .nav { padding: 10px 0; flex: 1; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px;
+    color: var(--text-main);
+    cursor: pointer;
+    position: relative;
+    border-radius: 0;
+    transition: background .15s;
+  }
+  .nav-item:hover { background: var(--purple-pale); }
+
+  .nav-item.active {
+    color: var(--purple);
+    background: var(--purple-light);
+    border-radius: 6px;
+    margin: 0 12px;
+    padding: 9px 10px;
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 70%;
+    background: var(--purple);
+    border-radius: 0 3px 3px 0;
+  }
+
+  .nav-icon {
+    width: 20px; height: 20px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-icon svg { width: 18px; height: 18px; }
+
+  .nav-label { flex: 1; font-weight: 400; font-size: 14px; }
+  .nav-arrow { color: var(--text-muted); font-size: 12px; }
+
+  .badge-red {
+    background: var(--red); color: #fff;
+    border-radius: 50%; width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+
+  .section-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.9px;
+    color: var(--text-section);
+    padding: 18px 20px 6px;
+    text-transform: uppercase;
+  }
+
+  /* Sub-items */
+  .sub-items { padding-left: 48px; }
+  .sub-items .nav-item { padding: 7px 10px; font-size: 13.5px; }
+  .sub-items .nav-item.active { margin: 0 12px 0 0; }
+
+  .subsub-items { padding-left: 16px; }
+  .subsub-items .nav-item { padding: 6px 10px; font-size: 13px; }
+  .subsub-items .nav-item.highlighted { background: #f2f2f3; border-radius: 5px; }
+
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    border: 2px solid var(--text-muted);
+    flex-shrink: 0;
+  }
+  .dot.filled { background: var(--purple); border-color: var(--purple); }
+
+  .nav-separator { height: 1px; background: var(--border); margin: 8px 0; }
+
+  /* ─── SHELL ─── */
+  .shell {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    height: var(--header-h);
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 16px;
+    position: sticky; top: 0; z-index: 50;
+    box-shadow: 0 2px 10px rgba(34,41,47,.06);
+  }
+
+  .header-toggle {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--purple); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; font-size: 16px;
+  }
+
+  .search-bar {
+    flex: 1; max-width: 340px;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--body-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    font-family: var(--font);
+  }
+  .search-bar svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  .header-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .h-icon {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text-muted);
+    transition: background .15s;
+    position: relative;
+  }
+  .h-icon:hover { background: var(--body-bg); }
+  .h-icon svg { width: 20px; height: 20px; }
+
+  .notif-dot {
+    position: absolute; top: 7px; right: 7px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red); border: 2px solid #fff;
+  }
+
+  .avatar-wrap { position: relative; margin-left: 6px; }
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    overflow: hidden; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-fallback { color: #fff; font-weight: 600; font-size: 14px; }
+  .online-dot {
+    position: absolute; bottom: 1px; right: 1px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green); border: 2px solid #fff;
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  .main {
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .page-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 4px;
+  }
+  .page-title { font-size: 20px; font-weight: 600; color: var(--text-main); }
+  .breadcrumb { font-size: 12.5px; color: var(--text-muted); }
+  .breadcrumb span { color: var(--purple); }
+
+  /* Dark accent bar above card */
+  .card-bar {
+    height: 3px; width: 100%;
+    background: linear-gradient(90deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+  thead th {
+    padding: 14px 18px;
+    font-size: 11.5px; font-weight: 600;
+    letter-spacing: 0.7px;
+    color: var(--text-section);
+    text-align: left;
+    text-transform: uppercase;
+    background: #fff;
+  }
+
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--purple-pale); }
+
+  td {
+    padding: 14px 18px;
+    vertical-align: middle;
+  }
+
+  /* Product cell */
+  .product-cell { display: flex; align-items: center; gap: 12px; }
+  .product-img {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: var(--body-bg); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .product-name { font-weight: 600; font-size: 13.5px; color: var(--text-main); }
+  .product-brand { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+  /* Category cell */
+  .cat-cell { display: flex; align-items: center; gap: 10px; }
+  .cat-icon {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .cat-label { font-size: 13.5px; color: var(--text-main); }
+
+  /* Payment cell */
+  .pay-amount { font-weight: 600; font-size: 13.5px; color: var(--purple); }
+  .pay-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+
+  /* Status badge */
+  .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+  }
+  .badge-completed { background: #e8f9ef; color: var(--green); }
+  .badge-confirmed { background: #eae8fd; color: var(--purple); }
+  .badge-cancelled { background: #fde8e8; color: var(--red); }
+
+  /* Action dots */
+  .action-dots {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text-muted);
+    transition: background .15s;
+    font-size: 18px; letter-spacing: 1px;
+  }
+  .action-dots:hover { background: var(--body-bg); color: var(--text-main); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar">
+  <a class="sidebar-logo" href="#">
+    <div class="logo-icon">S</div>
+    <span class="logo-text">sneat</span>
+  </a>
+
+  <nav class="nav">
+
+    <!-- Group 1: Dashboards -->
+    <div class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <span class="nav-label">Dashboards</span>
+      <div class="badge-red">5</div>
+      <span class="nav-arrow">›</span>
+    </div>
+
+    <div class="nav-separator"></div>
+    <div class="section-title">Apps &amp; Pages</div>
+
+    <!-- Group 2: Core apps -->
+    <div class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </div>
+      <span class="nav-label">eCommerce</span>
+      <span class="nav-arrow">›</span>
+    </div>
+
+    <div class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <span class="nav-label">Academy</span>
+      <span class="nav-arrow">›</span>
+    </div>
+
+    <div class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <span class="nav-label">Logistics</span>
+      <span class="nav-arrow">›</span>
+    </div>
+
+    <!-- Group 3: Users (active) -->
+    <div class="nav-item active">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <span class="nav-label">Users</span>
+      <span class="nav-arrow">˅</span>
+    </div>
+
+    <div class="sub-items">
+      <div class="nav-item">
+        <div class="dot"></div>
+        <span class="nav-label">List</span>
+      </div>
+
+      <div class="nav-item">
+        <div class="dot filled"></div>
+        <span class="nav-label">View</span>
+        <span class="nav-arrow">˅</span>
+      </div>
+
+      <div class="subsub-items">
+        <div class="nav-item">
+          <div class="dot"></div>
+          <span class="nav-label">Overview</span>
+        </div>
+        <div class="nav-item">
+          <div class="dot"></div>
+          <span class="nav-label">Security</span>
+        </div>
+        <div class="nav-item highlighted">
+          <div class="dot filled"></div>
+          <span class="nav-label">Billing &amp; Plans</span>
+        </div>
+        <div class="nav-item">
+          <div class="dot"></div>
+          <span class="nav-label">Notification</span>
+        </div>
+        <div class="nav-item">
+          <div class="dot"></div>
+          <span class="nav-label">Connection</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-separator"></div>
+
+    <!-- Group 4: Communication -->
+    <div class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <span class="nav-label">Email</span>
+    </div>
+
+    <div class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <span class="nav-label">Chat</span>
+    </div>
+
+    <div class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <span class="nav-label">Calendar</span>
+    </div>
+
+  </nav>
+</aside>
+
+<!-- ═══════════════ SHELL ═══════════════ -->
+<div class="shell">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-toggle">‹</div>
+
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search ⌘K
+    </div>
+
+    <div class="header-right">
+
+      <!-- Globe -->
+      <div class="h-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+
+      <!-- Moon -->
+      <div class="h-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </div>
+
+      <!-- Grid -->
+      <div class="h-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </div>
+
+      <!-- Bell -->
+      <div class="h-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot"></div>
+      </div>
+
+      <!-- Avatar -->
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <span class="avatar-fallback">JD</span>
+        </div>
+        <div class="online-dot"></div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="page-header">
+      <div>
+        <div class="page-title">User List</div>
+        <div class="breadcrumb">Home / <span>User</span> / List</div>
+      </div>
+    </div>
+
+    <!-- Dark bar above card -->
+    <div class="card-bar"></div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-img">📱</div>
+                  <div>
+                    <div class="product-name">OnePlus 7Pro</div>
+                    <div class="product-brand">OnePlus</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="cat-cell">
+                  <div class="cat-icon" style="background:#eae8fd;">📱</div>
+                  <span class="cat-label">Smart Phone</span>
+                </div>
+              </td>
+              <td>
+                <div class="pay-amount">$120/499</div>
+                <div class="pay-sub">Partially Paid</div>
+              </td>
+              <td><span class="badge badge-confirmed">Confirmed</span></td>
+              <td><div class="action-dots">⋮</div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-img">🖱️</div>
+                  <div>
+                    <div class="product-name">Magic Mouse</div>
+                    <div class="product-brand">Apple</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="cat-cell">
+                  <div class="cat-icon" style="background:#fff8e0;">🖱️</div>
+                  <span class="cat-label">Mouse</span>
+                </div>
+              </td>
+              <td>
+                <div class="pay-amount">$149</div>
+                <div class="pay-sub">Fully Paid</div>
+              </td>
+              <td><span class="badge badge-completed">Completed</span></td>
+              <td><div class="action-dots">⋮</div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-img">💻</div>
+                  <div>
+                    <div class="product-name">iMac Pro</div>
+                    <div class="product-brand">Apple</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="cat-cell">
+                  <div class="cat-icon" style="background:#e0f9ff;">💻</div>
+                  <span class="cat-label">Computer</span>
+                </div>
+              </td>
+              <td>
+                <div class="pay-amount">$0/899</div>
+                <div class="pay-sub">Unpaid</div>
+              </td>
+              <td><span class="badge badge-cancelled">Cancelled</span></td>
+              <td><div class="action-dots">⋮</div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-img">📱</div>
+                  <div>
+                    <div class="product-name">Note 10</div>
+                    <div class="product-brand">Samsung</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="cat-cell">
+                  <div class="cat-icon" style="background:#eae8fd;">📱</div>
+                  <span class="cat-label">Smart Phone</span>
+                </div>
+              </td>
+              <td>
+                <div class="pay-amount">$149</div>
+                <div class="pay-sub">Fully Paid</div>
+              </td>
+              <td><span class="badge badge-completed">Completed</span></td>
+              <td><div class="action-dots">⋮</div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-img">📱</div>
+                  <div>
+                    <div class="product-name">iPhone 11 Pro</div>
+                    <div class="product-brand">Apple</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="cat-cell">
+                  <div class="cat-icon" style="background:#eae8fd;">📱</div>
+                  <span class="cat-label">Smart Phone</span>
+                </div>
+              </td>
+              <td>
+                <div class="pay-amount">$399</div>
+                <div class="pay-sub">Fully Paid</div>
+              </td>
+              <td><span class="badge badge-completed">Completed</span></td>
+              <td><div class="action-dots">⋮</div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-img">📺</div>
+                  <div>
+                    <div class="product-name">Mi LED TV 4X</div>
+                    <div class="product-brand">Xiaomi</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="cat-cell">
+                  <div class="cat-icon" style="background:#ffeee0;">📺</div>
+                  <span class="cat-label">Smart TV</span>
+                </div>
+              </td>
+              <td>
+                <div class="pay-amount">$349/2499</div>
+                <div class="pay-sub">Partially Paid</div>
+              </td>
+              <td><span class="badge badge-confirmed">Confirmed</span></td>
+              <td><div class="action-dots">⋮</div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-img">🖱️</div>
+                  <div>
+                    <div class="product-name">Logitech MX</div>
+                    <div class="product-brand">Logitech</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="cat-cell">
+                  <div class="cat-icon" style="background:#fff8e0;">🖱️</div>
+                  <span class="cat-label">Mouse</span>
+                </div>
+              </td>
+              <td>
+                <div class="pay-amount">$89</div>
+                <div class="pay-sub">Fully Paid</div>
+              </td>
+              <td><span class="badge badge-completed">Completed</span></td>
+              <td><div class="action-dots">⋮</div></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

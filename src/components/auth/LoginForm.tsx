@@ -3,9 +3,10 @@ import '../../styles/Login.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { login, type LoginData } from '../../api/auth'
+import { useUser } from '../../context/UserContext'
 
 export default function LoginForm() {
-
+  const { refetchUser } = useUser()
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,8 +22,9 @@ export default function LoginForm() {
 
     mutationFn: login,
 
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem('token', data.access_token)
+      await refetchUser()
       navigate('/')
     },
 

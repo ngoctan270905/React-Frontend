@@ -5,13 +5,13 @@ import { fetchMe } from "../api/auth";
 interface UserContextType {
   user: any;
   isLoading: boolean;
-  refetchUser: () => void;
+  refetchUser: () => Promise<any>;
 }
 
 const UserContext = createContext<UserContextType>({
   user: null,
   isLoading: true,
-  refetchUser: () => {}
+  refetchUser: async () => Promise.resolve()
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
