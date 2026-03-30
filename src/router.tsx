@@ -6,12 +6,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import AccountPage from "./pages/AccountPage";
 
-// Import thêm các file phục vụ trang Admin
+// Import các file phục vụ trang Admin
 import AdminLayout from "./components/admin/layouts/AdminLayout";
 import DashboardPage from "./pages/admin/DashboardPage"; 
+import UserlistPage from "./pages/admin/UserlistPage";
 
 export const router = createBrowserRouter([
-    // ──── ROUTES NGƯỜI DÙNG (GIỮ NGUYÊN) ────
+    // ──── ROUTES NGƯỜI DÙNG ────
     {
         path: "/",
         element: <ProtectedRoute><HomePage /></ProtectedRoute>,
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
     {
         path: "/login",
         element: <PublicRoute><Login /></PublicRoute>
-  },
+    },
     {
         path: "/register",
         element: <PublicRoute><Register /></PublicRoute>
@@ -29,23 +30,26 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute><AccountPage /></ProtectedRoute>
     },
 
-    // ──── THÊM MỚI LOGIC TRANG ADMIN ────
+    // ──── ROUTES ADMIN (NESTED) ────
     {
         path: "/admin",
         element: (
             <ProtectedRoute> 
-                {/* Bạn có thể thêm RoleCheck ở đây nếu muốn chỉ Admin mới vào được */}
                 <AdminLayout />
             </ProtectedRoute>
         ),
         children: [
             {
-                index: true, // Khớp với đường dẫn /admin
+                index: true,
                 element: <DashboardPage />,
             },
             {
-                path: "users", // Khớp với đường dẫn /admin/users
-                element: <DashboardPage />, // Dùng chung component dashboard có cái bảng của bạn
+                path: "dashboard",
+                element: <DashboardPage />,
+            },
+            {
+                path: "users",
+                element: <UserlistPage />,
             }
         ]
     }

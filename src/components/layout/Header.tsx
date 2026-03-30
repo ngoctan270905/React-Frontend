@@ -4,7 +4,7 @@ import { useUser } from '../../context/UserContext'
 export default function Header() {
     const { user } = useUser()
     console.log("Lấy dữ liệu user từ Context:", user)
-    
+
     return (
         <>
             <div className="announcement-bar">

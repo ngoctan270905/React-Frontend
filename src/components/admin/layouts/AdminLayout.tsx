@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import "../../../styles/Admin.css";
 
 export default function AdminLayout() {
   return (
@@ -11,7 +12,7 @@ export default function AdminLayout() {
         <Header />
 
         <main className="main">
-          {/* DashboardPage sẽ được render vào đây */}
+          {/* Nội dung các trang con (DashboardTab, UserlistTab) sẽ đổ vào đây dựa trên URL */}
           <Outlet />
         </main>
       </div>
