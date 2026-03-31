@@ -8,7 +8,7 @@ export interface UpdateProfileData {
 export interface UpdateProfileResponse {
     success: boolean;
     message: string;
-    data: any;
+    data: any; 
 }
 
 export async function updateProfile(data: UpdateProfileData): Promise<UpdateProfileResponse> {

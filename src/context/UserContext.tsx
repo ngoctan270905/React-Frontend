@@ -1,21 +1,11 @@
-import { createContext, useContext, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMe } from "../api/auth";
-
-interface UserContextType {
-  user: any;
-  isLoading: boolean;
-  refetchUser: () => Promise<any>;
-}
-
-const UserContext = createContext<UserContextType>({
-  user: null,
-  isLoading: true,
-  refetchUser: async () => Promise.resolve()
-});
+import { useAuthStore } from "../stores/useAuthStore";
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const token = localStorage.getItem("token");
+  const { setUser, setLoading } = useAuthStore();
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["me"],
@@ -27,11 +17,34 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     refetchOnReconnect: false,
   });
 
-  return (
-    <UserContext.Provider value={{ user: data, isLoading, refetchUser: refetch }}>
-      {children}
-    </UserContext.Provider>
-  );
+  // === Đồng bộ dữ liệu từ React Query vào Zustand ===
+  useEffect(() => {
+    setLoading(isLoading);
+
+    if (data?.success && data?.data) {
+      setUser(data.data);        // ← Đẩy dữ liệu user vào Zustand
+    } else if (!token) {
+      setUser(null);
+    }
+  }, [data, isLoading, setUser, setLoading, token]);
+
+  return <>{children}</>;
 };
 
-export const useUser = () => useContext(UserContext);
+// Export hook để dùng ở mọi nơi
+export const useUser = () => {
+  const { user, isLoading, logout, updateProfile } = useAuthStore();
+  const { refetch } = useQuery({
+    queryKey: ["me"],
+    queryFn: fetchMe,
+    enabled: false,   // chỉ dùng để refetch khi cần
+  });
+
+  return {
+    user,
+    isLoading,
+    refetchUser: refetch,
+    logout,
+    updateProfile,
+  };
+};

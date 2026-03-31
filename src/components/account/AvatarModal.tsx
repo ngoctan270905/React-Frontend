@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 
 export default function AvatarModal({ onClose }: { onClose: () => void }) {
     const { user, refetchUser } = useUser()
-    const [preview, setPreview] = useState(user?.data.avatar_url || "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80");
+    const [preview, setPreview] = useState(user?.avatar_url || "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80");
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [error, setError] = useState("");
 

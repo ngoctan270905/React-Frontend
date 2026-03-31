@@ -14,10 +14,10 @@ export default function ProfileTab() {
 
   // Đồng bộ state khi dữ liệu user từ Context thay đổi
   useEffect(() => {
-    if (user?.data) {
-      setFullname(user.data.fullname || "");
-      setPhoneNumber(user.data.phone_number || "");
-      setEmail(user.data.email || "");
+    if (user) {
+      setFullname(user.fullname || "");
+      setPhoneNumber(user.phone_number || "");
+      setEmail(user.email || "");
     }
   }, [user]);
 
@@ -48,9 +48,9 @@ export default function ProfileTab() {
 
   const handleCancel = () => {
     // Reset về dữ liệu cũ từ context và đóng form
-    setFullname(user?.data?.fullname || "");
-    setPhoneNumber(user?.data?.phone_number || "");
-    setEmail(user?.data?.email || "");
+    setFullname(user?.fullname || "");
+    setPhoneNumber(user?.phone_number || "");
+    setEmail(user?.email || "");
     setIsEditing(false);
   };
 
@@ -69,15 +69,15 @@ export default function ProfileTab() {
           <div className="info-grid" id="infoGrid">
             <div className="info-item">
               <div className="info-label">Họ và Tên</div>
-              <div className="info-val">{user?.data?.fullname || "---"}</div>
+              <div className="info-val">{user?.fullname || "---"}</div>
             </div>
             <div className="info-item">
               <div className="info-label">Số Điện Thoại</div>
-              <div className="info-val">{user?.data?.phone_number || "---"}</div>
+              <div className="info-val">{user?.phone_number || "---"}</div>
             </div>
             <div className="info-item">
               <div className="info-label">Email</div>
-              <div className="info-val">{user?.data?.email || "---"}</div>
+              <div className="info-val">{user?.email || "---"}</div>
             </div>
             <div className="info-item">
               <div className="info-label">Ngày Sinh</div>

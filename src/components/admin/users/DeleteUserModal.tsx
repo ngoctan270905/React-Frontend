@@ -1,47 +1,54 @@
-import { LuTrash2, LuX } from "react-icons/lu"
-import { type UserListItem } from "../../../api/users_management"
+import { LuTrash2, LuX } from "react-icons/lu";
+import { type UserListItem } from "../../../api/users_management";
 
 interface DeleteUserModalProps {
-  isOpen: boolean
-  onClose: () => void
-  user: UserListItem | null
+  isOpen: boolean;
+  onClose: () => void;
+  user: UserListItem | null;
+  onConfirm?: (userId: string) => void; // Thêm callback để thực hiện xóa
 }
 
-export function DeleteUserModal({ isOpen, onClose, user }: DeleteUserModalProps) {
-  if (!isOpen || !user) return null
+export function DeleteUserModal({ isOpen, onClose, user, onConfirm }: DeleteUserModalProps) {
+  if (!isOpen || !user) return null;
+
+  const handleConfirmDelete = () => {
+    if (onConfirm) {
+      onConfirm(user.id);
+    }
+  };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-container modal-sm" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-body" style={{ paddingBottom: '8px' }}>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-24px' }}>
-            <button className="modal-close" onClick={onClose}>
+    <div className="delete-modal-overlay" onClick={onClose}>
+      <div className="delete-modal-card" onClick={(e) => e.stopPropagation()}>
+        <div className="delete-modal-body">
+          <div className="delete-modal-top-actions">
+            <button className="delete-modal-close-icon" onClick={onClose}>
               <LuX />
             </button>
           </div>
           
-          <div className="modal-icon-box danger">
-            <LuTrash2 size={24} />
+          <div className="delete-modal-danger-icon-box">
+            <LuTrash2 size={32} />
           </div>
 
-          <div className="modal-confirm-content">
-            <h3>Xác nhận xóa</h3>
-            <p>
+          <div className="delete-modal-text-content">
+            <h3 className="delete-modal-headline">Xác nhận xóa</h3>
+            <p className="delete-modal-description">
               Bạn có chắc chắn muốn xóa người dùng <strong>{user.fullname}</strong>? 
-              Hành động này không thể hoàn tác.
+              <br />Hành động này không thể hoàn tác và dữ liệu sẽ mất vĩnh viễn.
             </p>
           </div>
         </div>
 
-        <div className="modal-footer">
-          <button className="btn btn-secondary" onClick={onClose}>
+        <div className="delete-modal-actions-footer">
+          <button className="delete-modal-btn-cancel" onClick={onClose}>
             Hủy bỏ
           </button>
-          <button className="btn btn-danger">
+          <button className="delete-modal-btn-danger" onClick={handleConfirmDelete}>
             Xác nhận xóa
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }

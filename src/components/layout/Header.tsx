@@ -27,7 +27,7 @@ export default function Header() {
                     <div className="header-icons">
                         <i className="ph ph-magnifying-glass"></i>
                         <i className="ph ph-map-pin hide-mobile"></i>
-                        <Link to="/account" title={user?.data.fullname || ''}>
+                        <Link to="/account" title={user?.fullname || ''}>
                             <i className="ph ph-user hide-mobile"></i>
                         </Link>
                         <i className="ph ph-heart"></i>
