@@ -6,14 +6,15 @@ import {
   FiBook, 
   FiMail, 
   FiMessageSquare, 
-  FiChevronRight 
+  FiChevronRight,
+  FiGrid 
 } from "react-icons/fi";
 
 export default function Sidebar() {
   const menuItems = [
     { id: "dashboard", label: "Dashboards", icon: <FiLayout />, path: "/admin/dashboard", hasArrow: true },
-    { id: "users", label: "Users", icon: <FiUsers />, path: "/admin/users", hasArrow: true },
-    { id: "ecommerce", label: "eCommerce", icon: <FiShoppingCart />, path: "/admin/ecommerce", hasArrow: true },
+    { id: "users", label: "Quản lý người dùng", icon: <FiUsers />, path: "/admin/users", hasArrow: true },
+    { id: "categories", label: "Quản lý danh mục", icon: <FiGrid />, path: "/admin/categories", hasArrow: true },
     { id: "academy", label: "Academy", icon: <FiBook />, path: "/admin/academy", hasArrow: true },
     { id: "email", label: "Email", icon: <FiMail />, path: "/admin/email", hasArrow: false },
     { id: "chat", label: "Chat", icon: <FiMessageSquare />, path: "/admin/chat", hasArrow: false },
@@ -22,8 +23,8 @@ export default function Sidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar-logo">
-        <div className="admin-logo-icon">S</div>
-        <span className="admin-logo-text">sneat</span>
+        <div className="admin-logo-icon">F</div>
+        <span className="admin-logo-text">FASHION</span>
       </div>
 
       <nav className="admin-nav">

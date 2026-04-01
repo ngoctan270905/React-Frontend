@@ -6,8 +6,12 @@ import {
   FiGrid, 
   FiBell 
 } from "react-icons/fi";
+import { useUser } from "../../../context/UserContext";
 
 export default function Header() {
+    const {user} = useUser()
+    console.log("Lấy dữ liệu user từ Context:", user)
+
   return (
     <header className="admin-header">
       {/* Nút toggle Sidebar */}
@@ -46,7 +50,11 @@ export default function Header() {
         {/* Avatar người dùng */}
         <div className="admin-h-icon">
           <div className="admin-avatar">
-            <span className="admin-avatar-fallback">JD</span>
+            
+            {/* Nếu có avatar_url, hiển thị ảnh */}
+            {user?.avatar_url && (
+              <img src={user.avatar_url} alt="User Avatar" className="admin-avatar-img" />
+            )}
           </div>
           <div className="admin-online-dot"></div>
         </div>

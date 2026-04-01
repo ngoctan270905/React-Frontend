@@ -10,6 +10,7 @@ import AccountPage from "./pages/AccountPage";
 import AdminLayout from "./components/admin/layouts/AdminLayout";
 import DashboardPage from "./pages/admin/DashboardPage"; 
 import UserlistPage from "./pages/admin/UserlistPage";
+import CategorylistPage from "./pages/admin/CategorylistPage";
 
 export const router = createBrowserRouter([
     // ──── ROUTES NGƯỜI DÙNG ────
@@ -50,6 +51,11 @@ export const router = createBrowserRouter([
             {
                 path: "users",
                 element: <UserlistPage />,
+            },
+            {
+                path: "categories",
+                element: <CategorylistPage />,
+            
             }
         ]
     }

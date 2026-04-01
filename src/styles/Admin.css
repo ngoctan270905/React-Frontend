@@ -600,65 +600,6 @@ td {
   flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════════════════
-   ACTION MENU DROPDOWN
-═══════════════════════════════════════════════════ */
-.action-menu-dropdown {
-  position: fixed;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  z-index: 1000;
-  min-width: 170px;
-  display: flex;
-  flex-direction: column;
-  padding: 8px 0;
-  animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: top right;
-  pointer-events: all;
-}
-
-@keyframes dropdownFadeIn {
-  from { opacity: 0; transform: scale(0.95) translateY(-10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.action-item {
-  border: none;
-  background: transparent;
-  width: 100%;
-  text-align: left;
-  padding: 10px 16px;
-  font-size: 13.5px;
-  color: var(--text-main);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.15s ease;
-  font-weight: 500;
-}
-
-.action-item:hover {
-  background: var(--purple-pale);
-  color: var(--purple);
-}
-
-.action-item.delete:hover {
-  background: #fff1f0;
-  color: var(--red);
-}
-
-.action-item .icon {
-  font-size: 16px;
-  width: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.8;
-}
-
 .admin-table {
   width: 100%;
   border-collapse: separate;
@@ -1112,3 +1053,41 @@ td {
 @keyframes adminModalFadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes adminModalSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+/* Giao diện cụm nút bấm Sửa/Xóa mới (thay thế cho 3 chấm) */
+.custom-action-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border); /* Dùng biến border có sẵn của bạn */
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+  background: #fff;
+}
+
+.action-btn-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-main); /* Màu chữ xám đậm của bạn */
+  transition: all 0.2s;
+}
+
+.action-btn-item:not(:last-child) {
+  border-right: 1px solid var(--border);
+}
+
+.action-btn-item:hover {
+  background-color: var(--purple-pale); /* Màu tím nhạt khi hover */
+}
+
+.action-btn-item.delete-red {
+  color: var(--red); /* Dùng biến --red có sẵn của bạn */
+}
+
+.action-btn-item.delete-red:hover {
+  background-color: #fff1f0;
+}

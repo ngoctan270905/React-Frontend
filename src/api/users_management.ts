@@ -47,6 +47,14 @@ export interface UserSingleResponse {
     data: UserDetail;
 }
 
+export interface DeleteUserResponse {
+    success: boolean;
+    message: string;
+    data: string;
+}
+
+
+// API lấy danh sách người dùng với phân trang
 export async function getUserList(page: number = 1, pageSize: number = 10): Promise<UserListResponse> {
     const token = localStorage.getItem("token");
 
@@ -69,6 +77,7 @@ export async function getUserList(page: number = 1, pageSize: number = 10): Prom
     return data;
 }
 
+// API cập nhật thông tin người dùng (dành cho admin)
 export async function updateUser(userId: string, payload: UpdateUserPayload): Promise<UserSingleResponse> {
     const token = localStorage.getItem("token");
     const formData = new FormData();
@@ -95,4 +104,22 @@ export async function updateUser(userId: string, payload: UpdateUserPayload): Pr
     }
 
     return res.json();
+}
+
+// API xóa người dùng (dành cho admin)
+export async function deleteUser(userId: string): Promise<DeleteUserResponse> {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`http://127.0.0.1:8000/api/v1/admin/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if (!res.ok) {
+        throw new Error("Xóa người dùng thất bại");
+    }
+
+    return res.json();  
 }

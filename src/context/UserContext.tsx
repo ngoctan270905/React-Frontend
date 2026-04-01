@@ -10,10 +10,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["me"],
     queryFn: fetchMe,
-    enabled: !!token,
-    retry: false,
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
+    enabled: !!token, 
+    retry: false,  
+    staleTime: Infinity, 
+    refetchOnWindowFocus: false, 
     refetchOnReconnect: false,
   });
 
@@ -28,16 +28,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [data, isLoading, setUser, setLoading, token]);
 
-  return <>{children}</>;
+  return <>{children}</>; 
 };
 
 // Export hook để dùng ở mọi nơi
-export const useUser = () => {
+export const useUser = () => { 
   const { user, isLoading, logout, updateProfile } = useAuthStore();
   const { refetch } = useQuery({
     queryKey: ["me"],
     queryFn: fetchMe,
-    enabled: false,   // chỉ dùng để refetch khi cần
+    enabled: false, 
   });
 
   return {
