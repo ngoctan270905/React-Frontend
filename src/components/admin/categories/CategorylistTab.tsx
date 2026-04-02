@@ -5,11 +5,9 @@ import {
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
-  getSortedRowModel,
   flexRender,
   type ColumnFiltersState,
   type PaginationState,
-  type SortingState,
   type VisibilityState,
 } from "@tanstack/react-table";
 
@@ -21,9 +19,6 @@ import {
   LuChevronRight,
   LuSettings2,
   LuCheck,
-  LuArrowUp,
-  LuArrowDown,
-  LuArrowUpDown,
 } from "react-icons/lu";
 import { FiEdit } from "react-icons/fi";
 import getCategoryList, { type CategoryListItem } from "../../../api/categories";
@@ -38,14 +33,15 @@ const STATUS_OPTIONS = ["Tất cả", "Active", "Inactive"];
 
 function organizeTwoLevels(categories: CategoryListItem[]): CategoryListItem[] {
   const result: CategoryListItem[] = [];
-  const parents = categories.filter(c => c.level === 1).sort((a, b) => a.sort_order - b.sort_order);
+  // Lấy các danh mục cha (level 1)
+  const parents = categories.filter(c => c.level === 1);
+  // Lấy các danh mục con (level 2)
   const children = categories.filter(c => c.level === 2);
 
   parents.forEach(parent => {
     result.push(parent);
-    const subCats = children
-      .filter(child => child.parent_id === parent.id)
-      .sort((a, b) => a.sort_order - b.sort_order);
+    // Tìm và đẩy các danh mục con của cha này vào ngay sau nó
+    const subCats = children.filter(child => child.parent_id === parent.id);
     result.push(...subCats);
   });
 
@@ -55,7 +51,6 @@ function organizeTwoLevels(categories: CategoryListItem[]): CategoryListItem[] {
 export default function CategorylistTab() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -100,20 +95,6 @@ export default function CategorylistTab() {
   // Định nghĩa các cột cho react-table
   const columns = useMemo(
     () => [
-      columnHelper.accessor("image_url", {
-        header: "Hình ảnh",
-        enableSorting: false,
-        enableColumnFilter: false,
-        cell: (info) => (
-          <div className="admin-avatar" style={{ width: 40, height: 40, borderRadius: "8px", overflow: "hidden", border: "1px solid var(--border)" }}>
-            <img
-              src={info.getValue() || "/default-category.png"} 
-              alt={info.row.original.name}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-          </div>
-        ),
-      }),
       columnHelper.accessor("name", {
         header: "Tên danh mục",
         cell: (info) => {
@@ -130,6 +111,25 @@ export default function CategorylistTab() {
               alignItems: "center"
             }}>
               {info.getValue()}
+            </div>
+          );
+        },
+      }),
+      columnHelper.accessor("image_url", {
+        header: "Hình ảnh",
+        enableColumnFilter: false,
+        cell: (info) => {
+          const imageUrl = info.getValue();
+          if (!imageUrl) {
+            return <span style={{ color: "#94a3b8", fontSize: "13px" }}>Không có</span>;
+          }
+          return (
+            <div className="admin-avatar" style={{ width: 40, height: 40, borderRadius: "8px", overflow: "hidden", border: "1px solid var(--border)" }}>
+              <img
+                src={imageUrl} 
+                alt={info.row.original.name}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
             </div>
           );
         },
@@ -188,10 +188,6 @@ export default function CategorylistTab() {
           </span>
         ),
       }),
-      columnHelper.accessor("sort_order", {
-        header: "Thứ tự",
-        cell: (info) => <span style={{ color: "#64748b" }}>{info.getValue()}</span>,
-      }),
       columnHelper.display({
         id: "actions",
         header: "Hành động",
@@ -230,20 +226,17 @@ export default function CategorylistTab() {
     state: {
       globalFilter,
       columnFilters,
-      sorting,
       pagination,
       columnVisibility,
     },
     manualPagination: true, 
     pageCount: pageCount, 
     onPaginationChange: setPagination, 
-    onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
   });
 
   if (isLoading) return <div style={{ padding: 20 }}>Đang tải danh mục...</div>;
@@ -255,12 +248,11 @@ export default function CategorylistTab() {
   const resetFilters = () => {
     setGlobalFilter("");
     setColumnFilters([]);
-    setSorting([]);
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
     setColumnVisibility({});
   };
 
-  const hasFilter = globalFilter !== "" || columnFilters.length > 0 || sorting.length > 0;
+  const hasFilter = globalFilter !== "" || columnFilters.length > 0;
 
   return (
     <div>
@@ -379,21 +371,9 @@ export default function CategorylistTab() {
               {table.getHeaderGroups().map((hg) => (
                 <tr key={hg.id}>
                   {hg.headers.map((header) => (
-                    <th 
-                      key={header.id}
-                      onClick={header.column.getToggleSortingHandler()}
-                      style={{ cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }}
-                    >
+                    <th key={header.id}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         {flexRender(header.column.columnDef.header, header.getContext())}
-                        {header.column.getCanSort() && (
-                          <span style={{ fontSize: '12px', color: '#94a3b8' }}>
-                            {{
-                              asc: <LuArrowUp />,
-                              desc: <LuArrowDown />,
-                            }[header.column.getIsSorted() as string] ?? <LuArrowUpDown />}
-                          </span>
-                        )}
                       </div>
                     </th>
                   ))}
