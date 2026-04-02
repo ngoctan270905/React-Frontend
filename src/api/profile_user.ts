@@ -11,6 +11,7 @@ export interface UpdateProfileResponse {
     data: any; 
 }
 
+// Hàm gọi API cập nhật thông tin cá nhân
 export async function updateProfile(data: UpdateProfileData): Promise<UpdateProfileResponse> {
     const token = localStorage.getItem("token");
 

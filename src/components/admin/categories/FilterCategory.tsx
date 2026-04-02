@@ -14,6 +14,7 @@ interface FilterCategoryProps {
   hasFilter: boolean;
 }
 
+// 
 export default function FilterCategory({
   globalFilter,
   onGlobalFilterChange,

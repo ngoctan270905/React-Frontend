@@ -3,7 +3,8 @@ import '../../styles/Login.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { login, type LoginData } from '../../api/auth'
-import { useUser } from '../../context/UserContext'
+import { useUser } from '../../hooks/useMe'
+import { useAuthStore } from '../../stores/useAuthStore'
 
 export default function LoginForm() {
   const { refetchUser } = useUser()
@@ -13,6 +14,7 @@ export default function LoginForm() {
   const [error, setError] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const setToken = useAuthStore(state => state.setToken)
   const navigate = useNavigate()
 
   const validateEmail = (email: string) => {
@@ -23,7 +25,7 @@ export default function LoginForm() {
     mutationFn: login,
 
     onSuccess: async (data) => {
-      localStorage.setItem('token', data.access_token)
+      setToken(data.access_token)
       await refetchUser()
       navigate('/')
     },

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useUser } from "../../context/UserContext";
+import { useUser } from "../../hooks/useMe";
 import { updateProfile } from "../../api/profile_user";
 import { useMutation } from "@tanstack/react-query";
 

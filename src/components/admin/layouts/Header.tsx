@@ -6,11 +6,11 @@ import {
   FiGrid, 
   FiBell 
 } from "react-icons/fi";
-import { useUser } from "../../../context/UserContext";
+import { useUser } from "../../../hooks/useMe";
 
 export default function Header() {
     const {user} = useUser()
-    console.log("Lấy dữ liệu user từ Context:", user)
+    console.log("Lấy dữ liệu user từ useQuery:", user)
 
   return (
     <header className="admin-header">

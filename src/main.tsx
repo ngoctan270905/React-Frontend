@@ -4,7 +4,6 @@ import { router } from './router'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { UserProvider } from './context/UserContext'
 
 // cấu hình React Query
 const queryClient = new QueryClient({
@@ -24,9 +23,7 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('root')!).render(
   <QueryClientProvider client={queryClient}>
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
+    <RouterProvider router={router} />
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 )

@@ -30,6 +30,7 @@ import getCategoryList, { type CategoryListItem } from "../../../api/categories"
 import FilterCategory from "./FilterCategory";
 import AddCategoryModal from "./AddCategoryModal";
 import UpdateCategoryModal from "./UpdateCategoryModal";
+import { DeleteCategoryModal } from "./DeleteCategoryModal";
 
 const columnHelper = createColumnHelper<CategoryListItem>();
 
@@ -65,6 +66,7 @@ export default function CategorylistTab() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryListItem | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["categories", "list", pagination.pageIndex, pagination.pageSize],
@@ -90,6 +92,12 @@ export default function CategorylistTab() {
     setIsUpdateModalOpen(true);
   };
 
+  const handleDeleteClick = (category: CategoryListItem) => {
+    setSelectedCategory(category);
+    setIsDeleteModalOpen(true);
+  };
+  
+  // Định nghĩa các cột cho react-table
   const columns = useMemo(
     () => [
       columnHelper.accessor("image_url", {
@@ -136,7 +144,7 @@ export default function CategorylistTab() {
           const parent = rawCategories.find(c => c.id === parentId);
           return parent?.name === filterValue;
         },
-        cell: (info) => {
+        cell: (info) => { 
           const { level, parent_id } = info.row.original;
           if (level === 1 || !parent_id) {
             return <span style={{ color: "#94a3b8", fontSize: "13px" }}>Không có</span>;
@@ -158,7 +166,7 @@ export default function CategorylistTab() {
       }),
       columnHelper.accessor("slug", {
         header: "Slug",
-        cell: (info) => <code style={{ 
+        cell: (info) => <code style={{ // cell 
           fontSize: "12px", 
           color: "#64748b",
           background: "#f8f9fa",
@@ -201,7 +209,11 @@ export default function CategorylistTab() {
               >
                 <FiEdit size={18} />
               </button>
-              <button className="action-btn-item delete-red" title="Xóa">
+              <button 
+                className="action-btn-item delete-red" 
+                title="Xóa"
+                onClick={() => handleDeleteClick(category)}
+              >
                 <LuTrash2 size={18} />
               </button>
             </div>
@@ -222,9 +234,9 @@ export default function CategorylistTab() {
       pagination,
       columnVisibility,
     },
-    manualPagination: true,
-    pageCount: pageCount,
-    onPaginationChange: setPagination,
+    manualPagination: true, 
+    pageCount: pageCount, 
+    onPaginationChange: setPagination, 
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,
@@ -476,6 +488,12 @@ export default function CategorylistTab() {
         isOpen={isUpdateModalOpen}
         onClose={() => setIsUpdateModalOpen(false)}
         categories={rawCategories}
+        category={selectedCategory}
+      />
+
+      <DeleteCategoryModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
         category={selectedCategory}
       />
     </div>

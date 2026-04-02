@@ -1,4 +1,4 @@
-import { useUser } from "../../context/UserContext";
+import { useUser } from "../../hooks/useMe";
 // Khai báo kiểu dữ liệu cho props
 interface UserCardProps {
   onOpenModal: () => void;

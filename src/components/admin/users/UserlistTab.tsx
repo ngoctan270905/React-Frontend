@@ -48,22 +48,20 @@ export default function UserlistTab() {
     pageSize: 10,
   });
 
-  // State quản lý ẩn/hiện cột
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  // State quản lý mở/đóng dropdown chọn cột
   const [showColumnDropdown, setShowColumnDropdown] = useState(false);
 
   const [selectedUser, setSelectedUser] = useState<UserListItem | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  // Khôi phục hàm handleEditClick
+  // Hàm xử lý khi click nút Edit
   const handleEditClick = (user: UserListItem) => {
     setSelectedUser(user);
     setIsEditModalOpen(true);
   };
 
-  // Khôi phục hàm handleDeleteClick
+  // Hàm xử lý khi click nút Delete
   const handleDeleteClick = (user: UserListItem) => {
     setSelectedUser(user);
     setIsDeleteModalOpen(true);
@@ -75,9 +73,10 @@ export default function UserlistTab() {
     setColumnFilters([]);
     setSorting([]);
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-    setColumnVisibility({}); // Hiện lại tất cả các cột
+    setColumnVisibility({});
   };
 
+  // Kiểm tra nếu có bất kỳ filter nào đang được áp dụng để hiển thị nút reset
   const hasFilter = globalFilter !== "" || columnFilters.length > 0 || sorting.length > 0;
 
   // Fetch API lấy danh sách user
@@ -91,7 +90,7 @@ export default function UserlistTab() {
   const totalCount = data?.data.total_count || 0;
   const pageCount = Math.ceil(totalCount / pagination.pageSize);
 
-  const columns = useMemo( 
+  const columns = useMemo(
     () => [
       columnHelper.accessor("avatar_url", {
         header: "Avatar",
@@ -100,7 +99,7 @@ export default function UserlistTab() {
         cell: (info) => (
           <div className="admin-avatar" style={{ width: 32, height: 32 }}>
             <img
-              src={info.getValue() || "/default-avatar.png"} 
+              src={info.getValue() || "/default-avatar.png"}
               alt={info.row.original.fullname}
             />
           </div>
@@ -179,7 +178,8 @@ export default function UserlistTab() {
     ],
     []
   );
-  
+
+  // Khởi tạo bảng với react-table
   const table = useReactTable({
     data: users,
     columns,
@@ -193,8 +193,8 @@ export default function UserlistTab() {
     manualPagination: true,
     pageCount: pageCount,
     onPaginationChange: setPagination,
-    onColumnVisibilityChange: setColumnVisibility, // Lắng nghe thay đổi ẩn/hiện cột
-    
+    onColumnVisibilityChange: setColumnVisibility,
+
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,
@@ -202,13 +202,26 @@ export default function UserlistTab() {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
-  
-  if (isLoading)
-    return <div style={{ padding: 20 }}>Đang tải danh sách user...</div>;
-  if (isError)
-    return <div style={{ padding: 20 }}>Lỗi khi tải dữ liệu</div>;
 
-  const currentRoleFilter = (table.getColumn("role")?.getFilterValue() as string) || "Tất cả";
+  if (isLoading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Đang tải danh sách user...</p>
+        <span>Vui lòng chờ một chút</span>
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div className="error-container">
+        <div className="error-icon">⚠️</div>
+        <h3>Lỗi khi tải dữ liệu</h3>
+        <p>Đã xảy ra lỗi trong quá trình tải danh sách user.<br />Vui lòng thử lại sau.</p>
+      </div>
+    );
+
+  const currentRoleFilter = (table.getColumn("role")?.getFilterValue() as string) || "Tất cả"; 
   const currentStatusFilter = (table.getColumn("is_active")?.getFilterValue() as string) || "Tất cả";
 
   return (
@@ -303,9 +316,9 @@ export default function UserlistTab() {
                 {table.getAllLeafColumns().map(column => {
                   // Không cho phép ẩn cột "Hành động"
                   if (column.id === 'actions') return null;
-                  
+
                   return (
-                    <div 
+                    <div
                       key={column.id}
                       onClick={() => column.toggleVisibility()}
                       style={{
@@ -337,8 +350,8 @@ export default function UserlistTab() {
                         {column.getIsVisible() && <LuCheck size={12} strokeWidth={3} />}
                       </div>
                       <span style={{ flex: 1 }}>
-                        {typeof column.columnDef.header === 'string' 
-                          ? column.columnDef.header 
+                        {typeof column.columnDef.header === 'string'
+                          ? column.columnDef.header
                           : column.id}
                       </span>
                     </div>
@@ -358,7 +371,7 @@ export default function UserlistTab() {
               {table.getHeaderGroups().map((hg) => (
                 <tr key={hg.id}>
                   {hg.headers.map((header) => (
-                    <th 
+                    <th
                       key={header.id}
                       onClick={header.column.getToggleSortingHandler()}
                       style={{ cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }}
@@ -415,8 +428,8 @@ export default function UserlistTab() {
         </div>
 
         {/* --- Pagination Footer --- */}
-        <div className="admin-table-footer" style={{ 
-          padding: '16px 24px', 
+        <div className="admin-table-footer" style={{
+          padding: '16px 24px',
           borderTop: '1px solid #ebebeb',
           display: 'flex',
           alignItems: 'center',
@@ -427,7 +440,7 @@ export default function UserlistTab() {
           <div style={{ fontSize: '13.5px', color: '#64748b' }}>
             Tổng cộng <strong>{totalCount}</strong> người dùng
           </div>
-          
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button
               onClick={() => table.previousPage()}
@@ -445,11 +458,11 @@ export default function UserlistTab() {
             >
               <LuChevronLeft size={18} />
             </button>
-            
+
             <div style={{ fontSize: '13.5px', color: '#475569', fontWeight: 500 }}>
               Trang {pagination.pageIndex + 1} / {table.getPageCount()}
             </div>
-            
+
             <button
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}

@@ -67,6 +67,13 @@ export interface CategoryUpdateResponse {
   data: CategoryUpdateDetail
 }
 
+export interface DeleteCategoryResponse {
+  success: boolean
+  message: string
+  data: string
+}
+
+// Hàm gọi API lấy danh sách danh mục với phân trang
 export default async function getCategoryList(page: number = 1, pageSize: number = 10): Promise<CategoryListResponse> {
     const token = localStorage.getItem("token");
     const response = await fetch(`http://127.0.0.1:8000/api/v1/admin/categories/?page=${page}&page_size=${pageSize}`,
@@ -85,6 +92,7 @@ export default async function getCategoryList(page: number = 1, pageSize: number
     return response.json();
   }
 
+// Hàm gọi API tạo mới danh mục
 export async function createCategory(data: CategoryData): Promise<CategoryResponse> {
   const token = localStorage.getItem("token");
   const formData = new FormData();
@@ -114,6 +122,7 @@ export async function createCategory(data: CategoryData): Promise<CategoryRespon
   return response.json();
 }
 
+// Hàm gọi API cập nhật danh mục
 export async function updateCategory(categoryId: string, payload: CategoryUpdatePayload): Promise<CategoryUpdateResponse> {
   const token = localStorage.getItem("token");
   const formData = new FormData();
@@ -137,6 +146,23 @@ export async function updateCategory(categoryId: string, payload: CategoryUpdate
 
   if (!response.ok) {
     throw new Error("Failed to update category");
+  }
+
+  return response.json();
+}
+
+// Hàm gọi API xóa danh mục
+export async function deleteCategory(categoryId: string): Promise<DeleteCategoryResponse> {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`http://127.0.0.1:8000/api/v1/admin/categories/${categoryId}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete category");
   }
 
   return response.json();
