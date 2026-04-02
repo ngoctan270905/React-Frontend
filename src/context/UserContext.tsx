@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchMe } from "../api/auth";
 import { useAuthStore } from "../stores/useAuthStore";
 
-export const UserProvider = ({ children }: { children: ReactNode }) => {
+export const UserProvider = ({ children }: { children: ReactNode }) => { 
   const token = localStorage.getItem("token");
-  const { setUser, setLoading } = useAuthStore();
+  const { setUser, setLoading } = useAuthStore(); 
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["me"],
@@ -34,13 +34,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 // Export hook để dùng ở mọi nơi
 export const useUser = () => { 
   const { user, isLoading, logout, updateProfile } = useAuthStore();
-  const { refetch } = useQuery({
+  const { refetch } = useQuery({ 
     queryKey: ["me"],
-    queryFn: fetchMe,
+    queryFn: fetchMe, 
     enabled: false, 
   });
 
-  return {
+  return { 
     user,
     isLoading,
     refetchUser: refetch,

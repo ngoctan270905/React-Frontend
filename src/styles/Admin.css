@@ -1050,6 +1050,35 @@ td {
   cursor: pointer;
 }
 
+/* ─── Buttons ─── */
+.btn-add-new {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0 20px;
+  height: 46px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(115, 103, 240, 0.3);
+  white-space: nowrap;
+}
+
+.btn-add-new:hover {
+  background: #5e50ee;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(115, 103, 240, 0.4);
+}
+
+.btn-add-new:active {
+  transform: translateY(0);
+}
+
 @keyframes adminModalFadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes adminModalSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 

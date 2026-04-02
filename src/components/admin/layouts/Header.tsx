@@ -53,7 +53,7 @@ export default function Header() {
             
             {/* Nếu có avatar_url, hiển thị ảnh */}
             {user?.avatar_url && (
-              <img src={user.avatar_url} alt="User Avatar" className="admin-avatar-img" />
+              <img src={user.avatar_url} alt="User Avatar" className="admin-avatar-img" title={user.fullname} />
             )}
           </div>
           <div className="admin-online-dot"></div>

@@ -28,7 +28,7 @@ export default function FilterCategory({
 }: FilterCategoryProps) {
   return (
     <div className="filter-bar-wrapper">
-      <div className="filter-bar" style={{marginBottom: '16px'}}>
+      <div className="filter-bar">
         <div className="filter-bar__label">
           <LuListFilter className="filter-bar__icon" />
           <span>Filter By</span>

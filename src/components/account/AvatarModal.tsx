@@ -22,7 +22,7 @@ export default function AvatarModal({ onClose }: { onClose: () => void }) {
     const avatarMutation = useMutation({
         mutationFn: (file: File) => updateProfile({ avatar_file: file }),
         onSuccess: () => {
-            refetchUser(); // cập nhật avatar mới trong context
+            refetchUser();
             onClose();
         },
         onError: (err) => {
