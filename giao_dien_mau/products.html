@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Sản phẩm - Admin</title>
+  <style>
+    /* === Giữ nguyên toàn bộ CSS bạn cung cấp === */
+    *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sidebar-w: 260px;
+      --header-h: 64px;
+      --purple: #7367f0;
+      --purple-light: #ebe9fd;
+      --purple-pale: #f4f3fd;
+      --red: #ea5455;
+      --green: #28c76f;
+      --orange: #ff9f43;
+      --blue: #00cfe8;
+      --yellow: #ffc107;
+      --cyan: #0dcaf0;
+      --sidebar-bg: #fff;
+      --body-bg: #f8f7fa;
+      --border: #ebebeb;
+      --text-main: #444050;
+      --text-muted: #b4b2b7;
+      --text-section: #a5a3ae;
+      --shadow: 0 4px 24px 0 rgba(34, 41, 47, .1);
+      --font: 'Public Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--text-main);
+      background-color: var(--body-bg);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* === SIDEBAR, HEADER, MAIN - Giữ nguyên từ code của bạn === */
+    .admin-sidebar { width: var(--sidebar-w); min-height: 100vh; background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 100; }
+    .admin-sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 22px 20px 18px; border-bottom: 1px solid var(--border); text-decoration: none; }
+    .admin-logo-icon { width: 32px; height: 32px; background: var(--purple); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 15px; }
+    .admin-logo-text { font-size: 20px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+
+    .admin-nav { padding: 10px 0; flex: 1; }
+    .admin-nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; color: var(--text-main); cursor: pointer; transition: background .15s; }
+    .admin-nav-item:hover { background: var(--purple-pale); }
+    .admin-nav-item.admin-active { color: var(--purple); background: var(--purple-light); border-radius: 6px; margin: 0 12px; padding: 9px 10px; }
+    .admin-nav-item.admin-active::before { content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 3px; height: 70%; background: var(--purple); border-radius: 0 3px 3px 0; }
+    .admin-nav-icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .admin-nav-label { flex: 1; font-size: 14px; font-weight: 400; }
+
+    .shell { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .admin-header { height: var(--header-h); background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; gap: 16px; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 10px rgba(34, 41, 47, .06); }
+    .admin-header-toggle { width: 36px; height: 36px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+    .admin-search-bar { flex: 1; max-width: 340px; display: flex; align-items: center; gap: 8px; background: var(--body-bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text-muted); font-size: 13.5px; }
+    .admin-header-right { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+    .admin-h-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); transition: background .15s; }
+    .admin-h-icon:hover { background: var(--body-bg); }
+    .admin-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); overflow: hidden; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; }
+
+    .main { flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+
+    .card { background: #fff; border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .page-title { font-size: 24px; font-weight: 700; color: var(--text-main); margin: 0; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { padding: 14px 18px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.7px; color: var(--text-section); text-align: left; text-transform: uppercase; background: #fcfcfd; border-bottom: 1px solid var(--border); }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+    tbody tr:hover { background: var(--purple-pale); }
+    td { padding: 14px 18px; vertical-align: middle; font-size: 13.5px; color: var(--text-main); }
+
+    /* Product cell */
+    .product-cell { display: flex; align-items: center; gap: 12px; }
+    .product-img { width: 48px; height: 48px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; }
+    .product-name { font-weight: 600; font-size: 14px; color: var(--text-main); }
+    .product-brand { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+
+    .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+    .status-active { background: var(--green); }
+    .status-inactive { background: var(--red); }
+
+    .price { font-weight: 600; color: var(--purple); }
+    .stock-low { color: var(--orange); font-weight: 500; }
+    .stock-normal { color: var(--green); }
+
+    .custom-action-group { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; width: fit-content; }
+    .action-btn-item { padding: 8px 12px; border: none; background: transparent; cursor: pointer; color: var(--text-main); transition: all 0.2s; }
+    .action-btn-item:not(:last-child) { border-right: 1px solid var(--border); }
+    .action-btn-item:hover { background-color: var(--purple-pale); }
+    .action-btn-item.delete-red { color: var(--red); }
+    .action-btn-item.delete-red:hover { background-color: #fff1f0; }
+
+    .btn-add-new { display: flex; align-items: center; gap: 8px; background: var(--purple); color: #fff; border: none; border-radius: 10px; padding: 0 20px; height: 46px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(115, 103, 240, 0.3); }
+    .btn-add-new:hover { background: #5e50ee; transform: translateY(-1px); }
+
+    /* Filter bar */
+    .filter-bar { display: flex; align-items: center; background: #fff; border: 1px solid #e8ecf0; border-radius: 10px; padding: 0 4px; height: 46px; width: fit-content; gap: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .filter-bar__label { padding: 0 14px; font-size: 13.5px; font-weight: 500; color: #475569; white-space: nowrap; }
+    .filter-bar__divider { width: 1px; height: 28px; background: #e2e8f0; }
+    .filter-bar__search { display: flex; align-items: center; gap: 7px; padding: 0 14px; }
+    .filter-bar__search-input { border: none; outline: none; font-size: 13.5px; background: transparent; width: 180px; }
+
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-active { background: #e8f9ef; color: var(--green); }
+    .badge-inactive { background: #fde8e8; color: var(--red); }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <a href="#" class="admin-sidebar-logo">
+      <div class="admin-logo-icon">A</div>
+      <div class="admin-logo-text">AdminVN</div>
+    </a>
+    
+    <nav class="admin-nav">
+      <div class="admin-nav-item admin-active">
+        <div class="admin-nav-icon">📦</div>
+        <div class="admin-nav-label">Sản phẩm</div>
+      </div>
+      <div class="admin-nav-item">
+        <div class="admin-nav-icon">📂</div>
+        <div class="admin-nav-label">Danh mục</div>
+      </div>
+      <div class="admin-nav-item">
+        <div class="admin-nav-icon">🏷️</div>
+        <div class="admin-nav-label">Thương hiệu</div>
+      </div>
+      <!-- Các mục khác... -->
+    </nav>
+  </aside>
+
+  <!-- SHELL -->
+  <div class="shell">
+
+    <!-- HEADER -->
+    <header class="admin-header">
+      <div class="admin-header-toggle">☰</div>
+      
+      <div class="admin-search-bar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Tìm kiếm sản phẩm..." style="border:none;outline:none;background:transparent;width:100%;font-size:13.5px;">
+      </div>
+
+      <div class="admin-header-right">
+        <div class="admin-h-icon">🛎️</div>
+        <div class="admin-h-icon" style="position:relative;">
+          🛒
+          <div class="admin-notif-dot"></div>
+        </div>
+        <div class="admin-avatar">
+          <span class="admin-avatar-fallback">NN</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">Quản lý Sản phẩm</h1>
+        <button class="btn-add-new" onclick="alert('Mở form thêm sản phẩm mới')">
+          <span>+</span> Thêm sản phẩm mới
+        </button>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-bar__label">
+          <span style="margin-right:6px;">📋</span> Tất cả sản phẩm
+        </div>
+        <div class="filter-bar__divider"></div>
+        
+        <div class="filter-bar__search">
+          <span class="filter-bar__search-icon">🔍</span>
+          <input type="text" class="filter-bar__search-input" placeholder="Tìm theo tên, SKU...">
+        </div>
+
+        <div class="filter-bar__divider"></div>
+        
+        <button class="fl-select__btn">Danh mục ▼</button>
+        <div class="filter-bar__divider"></div>
+        
+        <button class="fl-select__btn">Trạng thái ▼</button>
+        <div class="filter-bar__divider"></div>
+        
+        <button class="filter-bar__reset">Đặt lại</button>
+      </div>
+
+      <!-- Product Table Card -->
+      <div class="card">
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">#</th>
+                <th>Sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Thương hiệu</th>
+                <th>Giá</th>
+                <th>Tồn kho</th>
+                <th>SKU</th>
+                <th>Trạng thái</th>
+                <th style="width: 140px; text-align: center;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Sản phẩm mẫu 1 -->
+              <tr>
+                <td>1</td>
+                <td>
+                  <div class="product-cell">
+                    <div class="product-img">
+                      <img src="https://picsum.photos/id/1015/200/200" alt="Áo Thun Polo">
+                    </div>
+                    <div>
+                      <div class="product-name">Áo Thun Nam Polo Basic</div>
+                      <div class="product-brand">LocalBrandVN</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Áo Thun Nam</td>
+                <td>LocalBrandVN</td>
+                <td><span class="price">199.000 ₫</span></td>
+                <td><span class="stock-normal">45</span></td>
+                <td><span style="font-family: monospace; font-size: 12.5px;">ATP-NAM-POLO-BLACK-S</span></td>
+                <td>
+                  <span class="badge badge-active">
+                    <span class="status-dot status-active"></span> Đang bán
+                  </span>
+                </td>
+                <td style="text-align: center;">
+                  <div class="custom-action-group">
+                    <button class="action-btn-item" title="Xem">👁️</button>
+                    <button class="action-btn-item" title="Sửa">✏️</button>
+                    <button class="action-btn-item delete-red" title="Xóa">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Sản phẩm mẫu 2 -->
+              <tr>
+                <td>2</td>
+                <td>
+                  <div class="product-cell">
+                    <div class="product-img">
+                      <img src="https://picsum.photos/id/237/200/200" alt="Quần Jeans">
+                    </div>
+                    <div>
+                      <div class="product-name">Quần Jeans Nam Slim Fit</div>
+                      <div class="product-brand">DenimCo</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Quần Jeans</td>
+                <td>DenimCo</td>
+                <td><span class="price">450.000 ₫</span></td>
+                <td><span class="stock-low">8</span></td>
+                <td><span style="font-family: monospace; font-size: 12.5px;">QJ-SLIM-BLUE-32</span></td>
+                <td>
+                  <span class="badge badge-active">
+                    <span class="status-dot status-active"></span> Đang bán
+                  </span>
+                </td>
+                <td style="text-align: center;">
+                  <div class="custom-action-group">
+                    <button class="action-btn-item" title="Xem">👁️</button>
+                    <button class="action-btn-item" title="Sửa">✏️</button>
+                    <button class="action-btn-item delete-red" title="Xóa">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Thêm nhiều dòng nữa nếu cần -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pagination (có thể mở rộng sau) -->
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--text-muted);">
+        <div>Hiển thị 1-10 của 248 sản phẩm</div>
+        <div style="display: flex; gap: 8px;">
+          <button style="padding: 6px 12px; border: 1px solid var(--border); background: #fff; border-radius: 6px; cursor: pointer;">← Trước</button>
+          <button style="padding: 6px 12px; background: var(--purple); color: white; border: none; border-radius: 6px; cursor: pointer;">1</button>
+          <button style="padding: 6px 12px; border: 1px solid var(--border); background: #fff; border-radius: 6px; cursor: pointer;">2</button>
+          <button style="padding: 6px 12px; border: 1px solid var(--border); background: #fff; border-radius: 6px; cursor: pointer;">Sau →</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

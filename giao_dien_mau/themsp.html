@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thêm Sản Phẩm Mới - Admin</title>
+  <style>
+    :root {
+      --sidebar-w: 260px;
+      --header-h: 64px;
+      --purple: #7367f0;
+      --purple-light: #ebe9fd;
+      --purple-pale: #f4f3fd;
+      --red: #ea5455;
+      --green: #28c76f;
+      --border: #ebebeb;
+      --text-main: #444050;
+      --text-muted: #b4b2b7;
+      --body-bg: #f8f7fa;
+      --shadow: 0 4px 24px 0 rgba(34, 41, 47, .1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Public Sans', sans-serif;
+      background: var(--body-bg);
+      color: var(--text-main);
+    }
+
+    .admin-sidebar {
+      width: var(--sidebar-w); min-height: 100vh; background: #fff;
+      border-right: 1px solid var(--border); position: fixed; left: 0; top: 0; bottom: 0; z-index: 100;
+    }
+    .admin-sidebar-logo {
+      display: flex; align-items: center; gap: 10px; padding: 22px 20px 18px; border-bottom: 1px solid var(--border);
+    }
+    .admin-logo-icon {
+      width: 32px; height: 32px; background: var(--purple); border-radius: 8px;
+      color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    }
+
+    .shell { margin-left: var(--sidebar-w); min-height: 100vh; }
+    .admin-header {
+      height: var(--header-h); background: #fff; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 24px; gap: 16px; position: sticky; top: 0; z-index: 50;
+    }
+    .main { flex: 1; padding: 32px 24px; }
+
+    .page-title { font-size: 24px; font-weight: 700; margin-bottom: 28px; }
+
+    .form-container {
+      display: grid;
+      grid-template-columns: 7fr 4fr;
+      gap: 40px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    /* Form chung */
+    .form-label {
+      display: block; font-size: 13.5px; font-weight: 600; color: #475569; margin-bottom: 8px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--purple); box-shadow: 0 0 0 3px var(--purple-light);
+    }
+    .form-textarea { min-height: 120px; }
+
+    /* Ảnh vuông - Featured Image */
+    .image-box {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fafafa;
+      cursor: pointer;
+      transition: all 0.2s;
+      overflow: hidden;
+    }
+    .image-box:hover {
+      border-color: var(--purple);
+      background: var(--purple-pale);
+    }
+    .image-box img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .image-box .placeholder {
+      font-size: 42px; color: #94a3b8; margin-bottom: 8px;
+    }
+    .image-box .text {
+      color: #64748b; font-size: 14px;
+    }
+
+    /* Ảnh biến thể (bé hơn) */
+    .variant-image-box {
+      width: 120px;
+      height: 120px;
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fafafa;
+      cursor: pointer;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .variant-image-box:hover { border-color: var(--purple); }
+    .variant-image-box img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* Variant */
+    .btn-add-variant {
+      background: var(--purple); color: white; border: none; padding: 12px 24px;
+      border-radius: 10px; font-weight: 600; cursor: pointer;
+    }
+
+    .attribute-selection {
+      margin-top: 20px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff;
+    }
+    .attribute-checkboxes {
+      display: flex; flex-wrap: wrap; gap: 12px;
+    }
+    .attr-item {
+      padding: 10px 18px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;
+    }
+
+    .variant-cards {
+      display: flex; flex-direction: column; gap: 18px; margin-top: 24px;
+    }
+    .variant-card {
+      border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; background: #fafafa;
+    }
+    .variant-card-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+    }
+    .remove-btn {
+      color: var(--red); background: none; border: none; font-size: 24px; cursor: pointer;
+    }
+
+    .btn-group {
+      display: flex; gap: 12px; justify-content: flex-end; margin-top: auto;
+    }
+    .btn-secondary { padding: 12px 28px; background: #f1f5f9; color: #475569; border: none; border-radius: 10px; cursor: pointer; }
+    .btn-primary { padding: 12px 32px; background: var(--purple); color: white; border: none; border-radius: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <aside class="admin-sidebar">
+    <a href="#" class="admin-sidebar-logo">
+      <div class="admin-logo-icon">A</div>
+      <div class="admin-logo-text">AdminVN</div>
+    </a>
+  </aside>
+
+  <div class="shell">
+    <header class="admin-header">
+      <div class="admin-header-toggle">☰</div>
+      <div style="flex:1; max-width:340px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; padding:8px 14px; display:flex; align-items:center; gap:8px;">
+        🔍 <input type="text" placeholder="Tìm kiếm..." style="border:none;background:transparent;outline:none;width:100%;">
+      </div>
+      <div style="margin-left:auto;">NN</div>
+    </header>
+
+    <main class="main">
+      <h1 class="page-title">Thêm Sản Phẩm Mới</h1>
+
+      <div class="form-container">
+
+        <!-- Card Trái -->
+        <div class="card left-card">
+          <div class="form-group">
+            <label class="form-label">Tên sản phẩm <span style="color:red;">*</span></label>
+            <input type="text" id="productName" class="form-input" placeholder="Áo Thun Nam Polo Basic">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Slug</label>
+            <input type="text" id="productSlug" class="form-input" readonly>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Mô tả sản phẩm</label>
+            <textarea class="form-textarea" placeholder="Nhập mô tả chi tiết..."></textarea>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+            <div class="form-group">
+              <label class="form-label">Danh mục</label>
+              <select class="form-select"><option>Áo Thun Nam</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Thương hiệu</label>
+              <input type="text" class="form-input" value="LocalBrandVN">
+            </div>
+          </div>
+
+          <div class="variant-section">
+            <button class="btn-add-variant" onclick="showAttributeSelection()">
+              + Thêm biến thể sản phẩm
+            </button>
+
+            <div id="attributeSelection" class="attribute-selection" style="display:none;">
+              <h3 style="margin-bottom:12px;">Chọn thuộc tính cho biến thể</h3>
+              <div class="attribute-checkboxes" id="checkboxList"></div>
+              <button onclick="createVariantCard()" style="margin-top:20px;padding:10px 24px;background:var(--purple);color:white;border:none;border-radius:8px;cursor:pointer;">
+                Tạo biến thể
+              </button>
+            </div>
+
+            <div id="variantCards" class="variant-cards"></div>
+          </div>
+        </div>
+
+        <!-- Card Phải -->
+        <div class="card right-card">
+          <div>
+            <label class="form-label">Ảnh chính (Featured Image)</label>
+            <div class="image-box" id="featuredBox" onclick="document.getElementById('featuredInput').click()">
+              <div class="placeholder">📸</div>
+              <div class="text">Chọn ảnh chính</div>
+            </div>
+            <input type="file" id="featuredInput" accept="image/*" style="display:none;" onchange="previewImage(this, 'featuredBox')">
+          </div>
+
+          <div>
+            <label class="form-label">Trạng thái</label>
+            <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--purple);">
+              <span>Đang hoạt động (isActive)</span>
+            </label>
+          </div>
+
+          <div style="background:#f8f9fa; padding:20px; border-radius:12px; font-size:13.5px; color:#64748b;">
+            Sau khi tạo sản phẩm, bạn có thể chỉnh sửa chi tiết biến thể sau.
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-secondary" onclick="history.back()">Hủy</button>
+            <button class="btn-primary" onclick="saveProduct()">Lưu sản phẩm</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Tạo slug tự động
+    document.getElementById('productName').addEventListener('input', function() {
+      let slug = this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+                    .replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-');
+      document.getElementById('productSlug').value = slug;
+    });
+
+    const availableAttributes = ["Màu sắc", "Size", "Chất liệu", "Kiểu dáng"];
+
+    function showAttributeSelection() {
+      const list = document.getElementById('checkboxList');
+      list.innerHTML = '';
+      availableAttributes.forEach(attr => {
+        const label = document.createElement('label');
+        label.className = 'attr-item';
+        label.innerHTML = `<input type="checkbox" value="${attr}"> ${attr}`;
+        list.appendChild(label);
+      });
+      document.getElementById('attributeSelection').style.display = 'block';
+    }
+
+    function createVariantCard() {
+      const checked = Array.from(document.querySelectorAll('#checkboxList input:checked'))
+                          .map(cb => cb.value).join(" - ");
+
+      if (!checked) {
+        alert("Vui lòng chọn ít nhất một thuộc tính!");
+        return;
+      }
+
+      const cardHTML = `
+        <div class="variant-card">
+          <div class="variant-card-header">
+            <span>Biến thể: <strong>${checked}</strong></span>
+            <button class="remove-btn" onclick="this.closest('.variant-card').remove()">×</button>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+            <div><label class="form-label">SKU</label><input type="text" class="form-input" placeholder="SKU"></div>
+            <div><label class="form-label">Giá (VND)</label><input type="number" class="form-input" value="199000"></div>
+            <div><label class="form-label">Tồn kho</label><input type="number" class="form-input" value="50"></div>
+          </div>
+
+          <!-- Ảnh biến thể - ô vuông bé -->
+          <div style="margin-top:16px;">
+            <label class="form-label">Ảnh biến thể</label>
+            <div class="variant-image-box" onclick="this.querySelector('input').click()">
+              <div style="font-size:28px; color:#94a3b8;">📸</div>
+              <input type="file" accept="image/*" style="display:none;" onchange="previewVariantImage(this, this.parentElement)">
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <label class="form-label">Album ảnh</label>
+            <input type="file" multiple accept="image/*" style="width:100%;">
+          </div>
+
+          <div style="margin-top:18px; text-align:right;">
+            <button style="padding:8px 18px; background:var(--purple-light); color:var(--purple); border:none; border-radius:8px; cursor:pointer; font-size:13.5px;">
+              Đặt làm biến thể mặc định
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('variantCards').innerHTML += cardHTML;
+      document.getElementById('attributeSelection').style.display = 'none';
+    }
+
+    // Preview ảnh chính
+    function previewImage(input, boxId) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById(boxId).innerHTML = `<img src="${e.target.result}">`;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    // Preview ảnh biến thể
+    function previewVariantImage(input, box) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          box.innerHTML = `<img src="${e.target.result}">`;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function saveProduct() {
+      alert("✅ Sản phẩm đã được lưu thành công!");
+    }
+  </script>
+</body>
+</html>

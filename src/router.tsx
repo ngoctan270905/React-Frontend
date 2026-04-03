@@ -11,6 +11,7 @@ import AdminLayout from "./components/admin/layouts/AdminLayout";
 import DashboardPage from "./pages/admin/DashboardPage"; 
 import UserlistPage from "./pages/admin/UserlistPage";
 import CategorylistPage from "./pages/admin/CategorylistPage";
+import AttributePage from "./pages/admin/AttributePage";
 
 export const router = createBrowserRouter([
     // ──── ROUTES NGƯỜI DÙNG ────
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
                 path: "categories",
                 element: <CategorylistPage />,
             
+            },
+            {
+                path: "attributes",
+                element: <AttributePage />,
             }
         ]
     }

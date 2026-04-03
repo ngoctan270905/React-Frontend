@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { 
   FiLayout, 
-  FiUsers, 
-  FiShoppingCart, 
+  FiUsers,  
   FiBook, 
   FiMail, 
   FiMessageSquare, 
   FiChevronRight,
-  FiGrid 
+  FiGrid ,
+  FiSliders
 } from "react-icons/fi";
 
 export default function Sidebar() {
@@ -15,6 +15,7 @@ export default function Sidebar() {
     { id: "dashboard", label: "Dashboards", icon: <FiLayout />, path: "/admin/dashboard", hasArrow: true },
     { id: "users", label: "Quản lý người dùng", icon: <FiUsers />, path: "/admin/users", hasArrow: true },
     { id: "categories", label: "Quản lý danh mục", icon: <FiGrid />, path: "/admin/categories", hasArrow: true },
+    { id: "attributes", label: "Quản lý thuộc tính", icon: <FiSliders />, path: "/admin/attributes", hasArrow: true },
     { id: "academy", label: "Academy", icon: <FiBook />, path: "/admin/academy", hasArrow: true },
     { id: "email", label: "Email", icon: <FiMail />, path: "/admin/email", hasArrow: false },
     { id: "chat", label: "Chat", icon: <FiMessageSquare />, path: "/admin/chat", hasArrow: false },
